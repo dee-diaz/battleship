@@ -15,4 +15,19 @@ describe('Ship', () => {
       expect(ship.isSunk).toBe(false);
     });
   });
+
+  // ship.hit()
+  describe('hit', () => {
+    it('increase the number of hits by 1', () => {
+      expect(ship.hit()).toBe(ship.numOfHits);
+    });
+    it('does nothing if the ship is sunk', () => {
+      ship.isSunk = true;
+      expect(ship.hit()).toBeNull();
+    });
+    it("number of hits can't exceed the ship's length", () => {
+      ship.numOfHits = 5;
+      expect(ship.hit()).toBeNull();
+    });
+  });
 });
