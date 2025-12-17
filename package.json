@@ -8,7 +8,8 @@
     "dev": "webpack serve --open --config webpack.dev.js",
     "deploy": "git subtree push --prefix dist origin gh-pages",
     "lint": "eslint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "jest --watchAll"
   },
   "author": "Diana Diaz",
   "license": "ISC",
