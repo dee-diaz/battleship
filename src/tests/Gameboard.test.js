@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import Gameboard from '../components/Gameboard';
-import { SHIPS } from '../components/Gameboard';
+import { SHIPS, ROWS, COLS } from '../components/Gameboard';
 
 describe('Gameboard', () => {
   let gameboard;
@@ -47,6 +47,16 @@ describe('Gameboard', () => {
     it('destroyer size is 2 squares', () => {
       const destroyer = fleet.get(SHIPS.DESTROYER);
       expect(destroyer.length).toBe(2);
+    });
+  });
+
+  describe('_placeShipAt (core logic)', () => {
+    describe('valid placements', () => {
+      it('places ship of length 2 (destroyer) horizontally', () => {
+        expect(
+          gameboard._placeShipAt(SHIPS.DESTROYER, ROWS[1], COLS[3], 'vertical'),
+        ).toEqual(['B-4', 'C-4']);
+      });
     });
   });
 });
