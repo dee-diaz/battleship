@@ -16,6 +16,16 @@ class Gameboard {
 
     return map;
   }
+
+  createFleet() {
+    const fleet = new Map();
+    fleet.set('carrier', 5);
+    fleet.set('battleship', 4);
+    fleet.set('cruiser', 3);
+    fleet.set('submarine', 3);
+    fleet.set('destroyer', 2);
+    return fleet;
+  }
 }
 
 export default Gameboard;
