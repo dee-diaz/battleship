@@ -9,7 +9,7 @@
     "deploy": "git subtree push --prefix dist origin gh-pages",
     "lint": "eslint",
     "format": "prettier --write .",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll --verbose"
   },
   "author": "Diana Diaz",
   "license": "ISC",
