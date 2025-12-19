@@ -45,7 +45,7 @@ class Gameboard {
   }
 
   _placeShipAt(ship, x, y, orientation) {
-    if (this.grid.get(`${x}-${y}`) !== 1) return;
+    if (this.grid.get(`${x}-${y}`) !== 1) throw new Error("Can't place here.");
 
     let coords = [];
     if (orientation === AXIS.Y) {
