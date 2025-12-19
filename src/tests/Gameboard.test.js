@@ -56,7 +56,7 @@ describe('Gameboard', () => {
       fleet = gameboard.createFleet();
     });
 
-    describe('valid placements', () => {
+    describe('valid vertical placements', () => {
       it('places ship of length 2 vertically', () => {
         const destroyer = fleet.get(SHIPS.DESTROYER);
         expect(
@@ -82,6 +82,13 @@ describe('Gameboard', () => {
         expect(
           gameboard._placeShipAt(carrier, ROWS[1], COLS[3], AXIS.Y),
         ).toEqual(['B-4', 'C-4', 'D-4', 'E-4', 'F-4']);
+      });
+
+      it('places ship at edge of board (bottom edge, vertical)', () => {
+        const destroyer = fleet.get(SHIPS.DESTROYER);
+        expect(
+          gameboard._placeShipAt(destroyer, ROWS[8], COLS[3], AXIS.Y),
+        ).toEqual(['I-4', 'J-4']);
       });
     });
   });
