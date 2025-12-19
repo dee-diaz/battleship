@@ -77,6 +77,12 @@ describe('Gameboard', () => {
           gameboard._placeShipAt(battleship, ROWS[1], COLS[3], AXIS.Y),
         ).toEqual(['B-4', 'C-4', 'D-4', 'E-4']);
       });
+      it('places ship of length 5 vertically', () => {
+        const carrier = fleet.get(SHIPS.CARRIER);
+        expect(
+          gameboard._placeShipAt(carrier, ROWS[1], COLS[3], AXIS.Y),
+        ).toEqual(['B-4', 'C-4', 'D-4', 'E-4', 'F-4']);
+      });
     });
   });
 });
