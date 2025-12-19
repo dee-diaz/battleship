@@ -44,10 +44,14 @@ class Gameboard {
   }
 
   _placeShipAt(ship, x, y, orientation) {
+    if (y > 10 || y < 1 || !ROWS.includes(x))
+      throw new Error('Enter correct coordinates!');
+
     if (this.grid.get(`${x}-${y}`) !== 1) throw new Error("Can't place here.");
 
     let coords = [];
     if (orientation === AXIS.Y) {
+      if (ROWS.indexOf(x) > 10 - ship.length) throw new Error('Out of bounds.');
       let allEmpty = true;
 
       // Check first
@@ -77,6 +81,8 @@ class Gameboard {
 
       return coords;
     } else if (orientation === AXIS.X) {
+      // 10 represents the last right edge column.
+      if (y - 1 > 10 - ship.length) throw new Error('Out of bounds.');
       let allEmpty = true;
 
       // Check first
