@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import Gameboard from '../components/Gameboard';
-import { SHIPS, ROWS, COLS, AXIS } from '../components/Gameboard';
+import { SHIPS, ROWS, AXIS } from '../components/Gameboard';
 
 describe('Gameboard', () => {
   let gameboard;
@@ -59,36 +59,95 @@ describe('Gameboard', () => {
     describe('valid vertical placements', () => {
       it('places ship of length 2 vertically', () => {
         const destroyer = fleet.get(SHIPS.DESTROYER);
-        expect(
-          gameboard._placeShipAt(destroyer, ROWS[1], COLS[3], AXIS.Y),
-        ).toEqual(['B-4', 'C-4']);
+        expect(gameboard._placeShipAt(destroyer, ROWS[1], 4, AXIS.Y)).toEqual([
+          'B-4',
+          'C-4',
+        ]);
       });
 
       it('places ship of length 3 vertically', () => {
         const submarine = fleet.get(SHIPS.SUBMARINE);
-        expect(
-          gameboard._placeShipAt(submarine, ROWS[1], COLS[3], AXIS.Y),
-        ).toEqual(['B-4', 'C-4', 'D-4']);
+        expect(gameboard._placeShipAt(submarine, ROWS[1], 4, AXIS.Y)).toEqual([
+          'B-4',
+          'C-4',
+          'D-4',
+        ]);
       });
 
       it('places ship of length 4 vertically', () => {
         const battleship = fleet.get(SHIPS.BATTLESHIP);
-        expect(
-          gameboard._placeShipAt(battleship, ROWS[1], COLS[3], AXIS.Y),
-        ).toEqual(['B-4', 'C-4', 'D-4', 'E-4']);
+        expect(gameboard._placeShipAt(battleship, ROWS[1], 4, AXIS.Y)).toEqual([
+          'B-4',
+          'C-4',
+          'D-4',
+          'E-4',
+        ]);
       });
       it('places ship of length 5 vertically', () => {
         const carrier = fleet.get(SHIPS.CARRIER);
-        expect(
-          gameboard._placeShipAt(carrier, ROWS[1], COLS[3], AXIS.Y),
-        ).toEqual(['B-4', 'C-4', 'D-4', 'E-4', 'F-4']);
+        expect(gameboard._placeShipAt(carrier, ROWS[1], 4, AXIS.Y)).toEqual([
+          'B-4',
+          'C-4',
+          'D-4',
+          'E-4',
+          'F-4',
+        ]);
       });
 
       it('places ship at edge of board (bottom edge, vertical)', () => {
         const destroyer = fleet.get(SHIPS.DESTROYER);
-        expect(
-          gameboard._placeShipAt(destroyer, ROWS[8], COLS[3], AXIS.Y),
-        ).toEqual(['I-4', 'J-4']);
+        expect(gameboard._placeShipAt(destroyer, ROWS[8], 4, AXIS.Y)).toEqual([
+          'I-4',
+          'J-4',
+        ]);
+      });
+    });
+
+    describe('valid horizontal placements', () => {
+      it('places ship of length 2 horizontally', () => {
+        const destroyer = fleet.get(SHIPS.DESTROYER);
+        expect(gameboard._placeShipAt(destroyer, ROWS[1], 4, AXIS.X)).toEqual([
+          'B-4',
+          'B-5',
+        ]);
+      });
+
+      it('places ship of length 3 horizontally', () => {
+        const submarine = fleet.get(SHIPS.SUBMARINE);
+        expect(gameboard._placeShipAt(submarine, ROWS[1], 4, AXIS.X)).toEqual([
+          'B-4',
+          'B-5',
+          'B-6',
+        ]);
+      });
+
+      it('places ship of length 4 horizontally', () => {
+        const battleship = fleet.get(SHIPS.BATTLESHIP);
+        expect(gameboard._placeShipAt(battleship, ROWS[1], 4, AXIS.X)).toEqual([
+          'B-4',
+          'B-5',
+          'B-6',
+          'B-7',
+        ]);
+      });
+
+      it('places ship of length 5 horizontally', () => {
+        const carrier = fleet.get(SHIPS.CARRIER);
+        expect(gameboard._placeShipAt(carrier, ROWS[1], 4, AXIS.X)).toEqual([
+          'B-4',
+          'B-5',
+          'B-6',
+          'B-7',
+          'B-8',
+        ]);
+      });
+
+      it('places ship at edge of board (right edge, horizontal)', () => {
+        const destroyer = fleet.get(SHIPS.DESTROYER);
+        expect(gameboard._placeShipAt(destroyer, ROWS[1], 9, AXIS.X)).toEqual([
+          'B-9',
+          'B-10',
+        ]);
       });
     });
   });
