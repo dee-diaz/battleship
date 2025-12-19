@@ -1,6 +1,7 @@
 import Ship from './Ship';
 
 export const ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+
 export const COLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 export const SHIPS = {
   CARRIER: 'carrier',
@@ -8,6 +9,10 @@ export const SHIPS = {
   CRUISER: 'cruiser',
   SUBMARINE: 'submarine',
   DESTROYER: 'destroyer',
+};
+export const AXIS = {
+  X: 'x',
+  Y: 'y',
 };
 
 class Gameboard {
@@ -40,17 +45,38 @@ class Gameboard {
   }
 
   _placeShipAt(ship, x, y, orientation) {
-    // ship of length 2
-    const coord = `${x}-${y}`;
-    if (this.grid.get(coord) === 1 && orientation === 'vertical') {
-      const currIndex = ROWS.indexOf(x);
-      const nextRow = ROWS[currIndex + 1];
+    if (this.grid.get(`${x}-${y}`) !== 1) return;
 
-      if (this.grid.get(`${nextRow}-${y}`) === 1) {
-        this.grid.set(coord, ship);
-        this.grid.set(`${nextRow}-${y}`, ship);
-        return [coord, `${nextRow}-${y}`];
+    let coords = [];
+    if (orientation === AXIS.Y) {
+      let allEmpty = true;
+
+      // Check first
+      for (let i = 0; i < ship.length; i++) {
+        let currCoord = `${x}-${y}`;
+        if (this.grid.get(currCoord) !== 1) {
+          allEmpty = false;
+          break;
+        }
+        let currIndex = ROWS.indexOf(x);
+        currCoord = `${ROWS[currIndex + 1]}-${y}`;
+        currIndex++;
       }
+
+      // Add then
+      if (allEmpty) {
+        let currCoord = `${x}-${y}`;
+        let currIndex = ROWS.indexOf(x);
+
+        for (let i = 0; i < ship.length; i++) {
+          coords.push(currCoord);
+          this.grid.set(currCoord, ship.name);
+          currCoord = `${ROWS[currIndex + 1]}-${y}`;
+          currIndex++;
+        }
+      }
+
+      return coords;
     }
   }
 
