@@ -150,5 +150,34 @@ describe('Gameboard', () => {
         ]);
       });
     });
+
+    describe('invalid placements - out of bounds', () => {
+      let submarine;
+      beforeEach(() => {
+        submarine = fleet.get(SHIPS.SUBMARINE);
+      });
+
+      it('throws when horizontal ship goes off right edge', () => {
+        expect(() =>
+          gameboard._placeShipAt(submarine, ROWS[1], 9, AXIS.X),
+        ).toThrow('Out of bounds.');
+      });
+
+      it('throws when vertical ship goes off bottom edge', () => {
+        expect(() =>
+          gameboard._placeShipAt(submarine, ROWS[8], 1, AXIS.Y),
+        ).toThrow('Out of bounds.');
+      });
+      it('throws when coordinates are negative', () => {
+        expect(() =>
+          gameboard._placeShipAt(submarine, ROWS[1], -2, AXIS.Y),
+        ).toThrow('Enter correct coordinates!');
+      });
+      it('throws when coordinates exceed board size', () => {
+        expect(() =>
+          gameboard._placeShipAt(submarine, ROWS[1], -2, AXIS.Y),
+        ).toThrow('Enter correct coordinates!');
+      });
+    });
   });
 });
