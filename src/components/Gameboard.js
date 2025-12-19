@@ -2,7 +2,6 @@ import Ship from './Ship';
 
 export const ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
-export const COLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 export const SHIPS = {
   CARRIER: 'carrier',
   BATTLESHIP: 'battleship',
@@ -73,6 +72,35 @@ class Gameboard {
           this.grid.set(currCoord, ship.name);
           currCoord = `${ROWS[currIndex + 1]}-${y}`;
           currIndex++;
+        }
+      }
+
+      return coords;
+    } else if (orientation === AXIS.X) {
+      let allEmpty = true;
+
+      // Check first
+      for (let i = 0; i < ship.length; i++) {
+        let currCoord = `${x}-${y}`;
+        if (this.grid.get(currCoord) !== 1) {
+          allEmpty = false;
+          break;
+        }
+        let currCol = y;
+        currCoord = `${x}-${currCol + 1}`;
+        currCol++;
+      }
+
+      // Add then
+      if (allEmpty) {
+        let currCoord = `${x}-${y}`;
+        let currCol = y;
+
+        for (let i = 0; i < ship.length; i++) {
+          coords.push(currCoord);
+          this.grid.set(currCoord, ship.name);
+          currCoord = `${x}-${currCol + 1}`;
+          currCol++;
         }
       }
 
