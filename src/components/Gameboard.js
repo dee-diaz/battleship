@@ -166,12 +166,11 @@ class Gameboard {
   }
 
   #allShipsSunk() {
-    const placedShips = new Set(
-      Array.from(this.grid.values()).filter((v) => typeof v === 'string'),
+    const hasShipsLeft = Array.from(this.grid.values()).some(
+      (value) => typeof value === 'string',
     );
-    return Array.from(placedShips).every((shipName) =>
-      this.fleet.get(shipName).isSunk(),
-    );
+
+    return !hasShipsLeft;
   }
 }
 
