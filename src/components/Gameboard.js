@@ -17,7 +17,7 @@ export const AXIS = {
 class Gameboard {
   constructor() {
     this.grid = this.#buildGrid();
-    this._fleet = this.createFleet();
+    this.fleet = this.createFleet();
   }
 
   #buildGrid(size = 10) {
@@ -116,7 +116,7 @@ class Gameboard {
     const randomInt = (min, max) =>
       Math.floor(Math.random() * (max - min + 1)) + min;
 
-    this._fleet.forEach((ship) => {
+    this.fleet.forEach((ship) => {
       let coords = null;
       let attempts = 0;
       const MAX_ATTEMPTS = 200;
@@ -141,6 +141,37 @@ class Gameboard {
     });
 
     return true;
+  }
+
+  receiveAttack(x, y) {
+    if (!ROWS.includes(x) || y < 1 || y > 10) throw new Error('Out of bounds.');
+
+    if (typeof this.grid.get(`${x}-${y}`) === 'string') {
+      const shipName = this.grid.get(`${x}-${y}`);
+      const ship = this.fleet.get(shipName);
+      ship.hit();
+      this.grid.set(`${x}-${y}`, 0);
+
+      return ship.isSunk()
+        ? this.#allShipsSunk()
+          ? 'Game over. All ships have been sunk'
+          : `${ship.name} got sunk`
+        : `${ship.name} got hit`;
+    } else if (this.grid.get(`${x}-${y}`) === 1) {
+      this.grid.set(`${x}-${y}`, 0);
+      return 'Miss';
+    } else {
+      return 'No effect';
+    }
+  }
+
+  #allShipsSunk() {
+    const placedShips = new Set(
+      Array.from(this.grid.values()).filter((v) => typeof v === 'string'),
+    );
+    return Array.from(placedShips).every((shipName) =>
+      this.fleet.get(shipName).isSunk(),
+    );
   }
 }
 
