@@ -222,4 +222,18 @@ describe('Gameboard', () => {
       expect(gameboard.grid.get(`${ROWS[1]}-3`)).toBe(submarine.name);
     });
   });
+
+  describe('placeShips (random placement)', () => {
+    it('successfully places ships on empty board', () => {
+      expect(gameboard.placeShips()).toBeTruthy();
+    });
+
+    it('places all 5 ships on the board', () => {
+      gameboard.placeShips();
+      const occupiedCells = Array.from(gameboard.grid.values()).filter(
+        (cell) => typeof cell === 'string',
+      );
+      expect(occupiedCells.length).toBe(17);
+    });
+  });
 });
