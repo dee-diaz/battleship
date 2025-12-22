@@ -52,6 +52,16 @@ class Gameboard {
 
     if (this.grid.get(`${x}-${y}`) !== 1) throw new Error("Can't place here.");
 
+    // Adjacent placement
+    if (
+      (this.grid.get(`${x}-${y}`) === 1 &&
+        typeof this.grid.get(`${x}-${y - 1}`) === 'string') ||
+      typeof this.grid.get(`${x}-${y + 1}`) === 'string' ||
+      typeof this.grid.get(`${ROWS[ROWS.indexOf(x) - 1]}-${y}`) === 'string' ||
+      typeof this.grid.get(`${ROWS[ROWS.indexOf(x) + 1]}-${y}`) === 'string'
+    )
+      throw new Error("Can't place here.");
+
     if (ROWS.indexOf(x) > 10 - ship.length || y - 1 > 10 - ship.length)
       throw new Error('Out of bounds.');
 
@@ -94,7 +104,6 @@ class Gameboard {
           currCoord = `${x}-${currCol + 1}`;
           currCol++;
         }
-
       }
     }
 
