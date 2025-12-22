@@ -236,4 +236,59 @@ describe('Gameboard', () => {
       expect(occupiedCells.length).toBe(17);
     });
   });
+
+  describe('receiveAttack', () => {
+    let submarine;
+    let destroyer;
+    beforeEach(() => {
+      submarine = gameboard.fleet.get(SHIPS.SUBMARINE);
+      destroyer = gameboard.fleet.get(SHIPS.DESTROYER);
+      gameboard._placeShipAt(submarine, ROWS[1], 1, AXIS.Y);
+      gameboard._placeShipAt(destroyer, ROWS[8], 1, AXIS.X);
+    });
+
+    it('throw if coordinates are out of bounds', () => {
+      expect(() => gameboard.receiveAttack(ROWS[1], 11)).toThrow(
+        'Out of bounds.',
+      );
+      expect(() => gameboard.receiveAttack('X', 2)).toThrow('Out of bounds.');
+    });
+
+    it('ship gets hit', () => {
+      expect(gameboard.receiveAttack(ROWS[1], 1)).toMatch('submarine got hit');
+      expect(gameboard.grid.get(`${ROWS[1]}-1`)).toBe(0);
+    });
+
+    it('ship gets sunk', () => {
+      expect(gameboard.receiveAttack(ROWS[1], 1)).toMatch('submarine got hit');
+      expect(gameboard.receiveAttack(ROWS[2], 1)).toMatch('submarine got hit');
+      expect(gameboard.receiveAttack(ROWS[3], 1)).toMatch('submarine got sunk');
+      expect(gameboard.grid.get(`${ROWS[1]}-1`)).toBe(0);
+      expect(gameboard.grid.get(`${ROWS[2]}-1`)).toBe(0);
+      expect(gameboard.grid.get(`${ROWS[3]}-1`)).toBe(0);
+    });
+
+    it('hits an empty square', () => {
+      expect(gameboard.grid.get(`${ROWS[5]}-8`)).toBe(1);
+      expect(gameboard.receiveAttack(ROWS[5], 8)).toMatch('Miss');
+      expect(gameboard.grid.get(`${ROWS[5]}-8`)).toBe(0);
+    });
+
+    it("can't hit an already hit square", () => {
+      gameboard.receiveAttack(ROWS[5], 8);
+      expect(gameboard.grid.get(`${ROWS[5]}-8`)).toBe(0);
+      expect(gameboard.receiveAttack(ROWS[5], 8)).toMatch('No effect');
+    });
+
+    it('report if all the ships have been sunk', () => {
+      gameboard.receiveAttack(ROWS[1], 1);
+      gameboard.receiveAttack(ROWS[2], 1);
+      gameboard.receiveAttack(ROWS[3], 1);
+
+      gameboard.receiveAttack(ROWS[8], 1);
+      expect(gameboard.receiveAttack(ROWS[8], 2)).toMatch(
+        'Game over. All ships have been sunk',
+      );
+    });
+  });
 });
