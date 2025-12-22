@@ -1,8 +1,8 @@
-/* eslint-disable no-undef */
 import Gameboard from './Gameboard';
 
 class Player {
-  constructor() {
+  constructor(playerType) {
+    this.playerType = playerType;
     this.gameboard = new Gameboard();
     this.gameboard.placeShips();
   }
