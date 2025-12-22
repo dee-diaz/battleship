@@ -47,71 +47,58 @@ class Gameboard {
     if (y > 10 || y < 1 || !ROWS.includes(x))
       throw new Error('Enter correct coordinates!');
 
+    if (orientation !== AXIS.X && orientation !== AXIS.Y)
+      throw new Error('Invalid orientation');
+
     if (this.grid.get(`${x}-${y}`) !== 1) throw new Error("Can't place here.");
 
-    let coords = [];
-    if (orientation === AXIS.Y) {
-      if (ROWS.indexOf(x) > 10 - ship.length) throw new Error('Out of bounds.');
-      let allEmpty = true;
+    if (ROWS.indexOf(x) > 10 - ship.length || y - 1 > 10 - ship.length)
+      throw new Error('Out of bounds.');
 
-      // Check first
-      for (let i = 0; i < ship.length; i++) {
-        let currCoord = `${x}-${y}`;
-        if (this.grid.get(currCoord) !== 1) {
-          allEmpty = false;
-          break;
-        }
-        let currIndex = ROWS.indexOf(x);
+    let coords = [];
+    let allEmpty = true;
+
+    // Check first
+    for (let i = 0; i < ship.length; i++) {
+      let currCoord = `${x}-${y}`;
+      if (this.grid.get(currCoord) !== 1) {
+        allEmpty = false;
+        break;
+      }
+
+      let currIndex = ROWS.indexOf(x);
+      let currCol = y;
+
+      if (orientation === AXIS.Y) {
         currCoord = `${ROWS[currIndex + 1]}-${y}`;
         currIndex++;
-      }
-
-      // Add then
-      if (allEmpty) {
-        let currCoord = `${x}-${y}`;
-        let currIndex = ROWS.indexOf(x);
-
-        for (let i = 0; i < ship.length; i++) {
-          coords.push(currCoord);
-          this.grid.set(currCoord, ship.name);
-          currCoord = `${ROWS[currIndex + 1]}-${y}`;
-          currIndex++;
-        }
-      }
-
-      return coords;
-    } else if (orientation === AXIS.X) {
-      // 10 represents the last right edge column.
-      if (y - 1 > 10 - ship.length) throw new Error('Out of bounds.');
-      let allEmpty = true;
-
-      // Check first
-      for (let i = 0; i < ship.length; i++) {
-        let currCoord = `${x}-${y}`;
-        if (this.grid.get(currCoord) !== 1) {
-          allEmpty = false;
-          break;
-        }
-        let currCol = y;
+      } else {
         currCoord = `${x}-${currCol + 1}`;
         currCol++;
       }
+    }
 
-      // Add then
-      if (allEmpty) {
-        let currCoord = `${x}-${y}`;
-        let currCol = y;
+    // Add then
+    if (allEmpty) {
+      let currCoord = `${x}-${y}`;
+      let currIndex = ROWS.indexOf(x);
+      let currCol = y;
 
-        for (let i = 0; i < ship.length; i++) {
-          coords.push(currCoord);
-          this.grid.set(currCoord, ship.name);
+      for (let i = 0; i < ship.length; i++) {
+        coords.push(currCoord);
+        this.grid.set(currCoord, ship.name);
+        if (orientation === AXIS.Y) {
+          currCoord = `${ROWS[currIndex + 1]}-${y}`;
+          currIndex++;
+        } else {
           currCoord = `${x}-${currCol + 1}`;
           currCol++;
         }
-      }
 
-      return coords;
+      }
     }
+
+    return coords;
   }
 
   // placeShip(ship) {}
