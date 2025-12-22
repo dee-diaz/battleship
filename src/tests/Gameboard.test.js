@@ -185,9 +185,33 @@ describe('Gameboard', () => {
     });
 
     describe('invalid placements - overlap', () => {
-      it.todo('throws when ships overlap completely');
-      it.todo('throws when ships overlap partially');
-      it.todo('throws when ships are adjacent (touching but not overlapping)');
+      let submarine;
+      let cruiser;
+      beforeEach(() => {
+        submarine = fleet.get(SHIPS.SUBMARINE);
+        cruiser = fleet.get(SHIPS.CRUISER);
+      });
+
+      it('throws when ships overlap completely', () => {
+        gameboard._placeShipAt(submarine, ROWS[1], 4, AXIS.X);
+        expect(() =>
+          gameboard._placeShipAt(cruiser, ROWS[1], 4, AXIS.X),
+        ).toThrow("Can't place here.");
+      });
+
+      it('throws when ships overlap partially', () => {
+        gameboard._placeShipAt(submarine, ROWS[1], 4, AXIS.X);
+        expect(() =>
+          gameboard._placeShipAt(cruiser, ROWS[1], 6, AXIS.X),
+        ).toThrow("Can't place here.");
+      });
+
+      it('throws when ships are adjacent (touching but not overlapping)', () => {
+        gameboard._placeShipAt(submarine, ROWS[4], 5, AXIS.Y);
+        expect(() =>
+          gameboard._placeShipAt(cruiser, ROWS[5], 5, AXIS.Y),
+        ).toThrow("Can't place here.");
+      });
     });
   });
 });
