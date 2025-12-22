@@ -112,7 +112,36 @@ class Gameboard {
     return coords;
   }
 
-  // placeShip(ship) {}
+  placeShips() {
+    const randomInt = (min, max) =>
+      Math.floor(Math.random() * (max - min + 1)) + min;
+
+    this._fleet.forEach((ship) => {
+      let coords = null;
+      let attempts = 0;
+      const MAX_ATTEMPTS = 200;
+
+      while (!coords && attempts <= MAX_ATTEMPTS) {
+        try {
+          const randomX = ROWS[randomInt(0, 9)];
+          const randomY = randomInt(1, 10);
+          const randomAxis = Object.values(AXIS)[randomInt(0, 1)];
+          coords = this._placeShipAt(ship, randomX, randomY, randomAxis);
+          // eslint-disable-next-line no-unused-vars
+        } catch (error) {
+          attempts++;
+        }
+      }
+
+      if (!coords) {
+        throw new Error(
+          `Failed to place ${ship.name} after ${MAX_ATTEMPTS} attempts`,
+        );
+      }
+    });
+
+    return true;
+  }
 }
 
 export default Gameboard;
