@@ -162,7 +162,6 @@ describe('Gameboard', () => {
           gameboard._placeShipAt(submarine, ROWS[1], 9, AXIS.X),
         ).toThrow('Out of bounds.');
       });
-
       it('throws when vertical ship goes off bottom edge', () => {
         expect(() =>
           gameboard._placeShipAt(submarine, ROWS[8], 1, AXIS.Y),
@@ -178,6 +177,17 @@ describe('Gameboard', () => {
           gameboard._placeShipAt(submarine, ROWS[1], -2, AXIS.Y),
         ).toThrow('Enter correct coordinates!');
       });
+      it('throws when the orientation is incorrect', () => {
+        expect(() =>
+          gameboard._placeShipAt(submarine, ROWS[1], 1, 'diagonal'),
+        ).toThrow('Invalid orientation');
+      });
+    });
+
+    describe('invalid placements - overlap', () => {
+      it.todo('throws when ships overlap completely');
+      it.todo('throws when ships overlap partially');
+      it.todo('throws when ships are adjacent (touching but not overlapping)');
     });
   });
 });
