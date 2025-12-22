@@ -52,45 +52,47 @@ class Gameboard {
 
     if (this.grid.get(`${x}-${y}`) !== 1) throw new Error("Can't place here.");
 
-    // Adjacent placement
-    if (
-      (this.grid.get(`${x}-${y}`) === 1 &&
-        typeof this.grid.get(`${x}-${y - 1}`) === 'string') ||
-      typeof this.grid.get(`${x}-${y + 1}`) === 'string' ||
-      typeof this.grid.get(`${ROWS[ROWS.indexOf(x) - 1]}-${y}`) === 'string' ||
-      typeof this.grid.get(`${ROWS[ROWS.indexOf(x) + 1]}-${y}`) === 'string'
-    )
-      throw new Error("Can't place here.");
-
     if (ROWS.indexOf(x) > 10 - ship.length || y - 1 > 10 - ship.length)
       throw new Error('Out of bounds.');
 
     let coords = [];
     let allEmpty = true;
+    let currCoord = `${x}-${y}`;
 
     // Check first
     for (let i = 0; i < ship.length; i++) {
-      let currCoord = `${x}-${y}`;
       if (this.grid.get(currCoord) !== 1) {
         allEmpty = false;
         break;
       }
 
-      let currIndex = ROWS.indexOf(x);
-      let currCol = y;
+      let [currentRow, currentCol] = currCoord.split('-');
+      currentCol = parseInt(currentCol);
+
+      let neighbors = [
+        `${currentRow}-${currentCol - 1}`,
+        `${currentRow}-${currentCol + 1}`,
+        `${ROWS[ROWS.indexOf(currentRow) - 1]}-${currentCol}`,
+        `${ROWS[ROWS.indexOf(currentRow) + 1]}-${currentCol}`,
+      ];
+
+      // Adjacent placement check
+      for (let neighbor of neighbors) {
+        if (typeof this.grid.get(neighbor) === 'string')
+          throw new Error("Can't place here.");
+      }
 
       if (orientation === AXIS.Y) {
-        currCoord = `${ROWS[currIndex + 1]}-${y}`;
-        currIndex++;
+        let nextRowIndex = ROWS.indexOf(currentRow) + 1;
+        currCoord = `${ROWS[nextRowIndex]}-${currentCol}`;
       } else {
-        currCoord = `${x}-${currCol + 1}`;
-        currCol++;
+        currCoord = `${currentRow}-${currentCol + 1}`;
       }
     }
 
     // Add then
     if (allEmpty) {
-      let currCoord = `${x}-${y}`;
+      currCoord = `${x}-${y}`;
       let currIndex = ROWS.indexOf(x);
       let currCol = y;
 
