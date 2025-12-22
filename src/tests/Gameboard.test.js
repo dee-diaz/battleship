@@ -213,5 +213,13 @@ describe('Gameboard', () => {
         ).toThrow("Can't place here.");
       });
     });
+
+    it('marks all occupied cells on the grid', () => {
+      const submarine = fleet.get(SHIPS.SUBMARINE);
+      gameboard._placeShipAt(submarine, ROWS[1], 1, AXIS.X);
+      expect(gameboard.grid.get(`${ROWS[1]}-1`)).toBe(submarine.name);
+      expect(gameboard.grid.get(`${ROWS[1]}-2`)).toBe(submarine.name);
+      expect(gameboard.grid.get(`${ROWS[1]}-3`)).toBe(submarine.name);
+    });
   });
 });
