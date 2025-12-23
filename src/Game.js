@@ -11,7 +11,13 @@ class Game {
   constructor() {
     this.player1 = new Player(PLAYER_TYPE.HUMAN, 'Dee');
     this.player2 = new Player(PLAYER_TYPE.BOT);
-    this.ui = new Render();
+    this.init();
+  }
+
+  init() {
+    const container = document.querySelector('.container');
+    const userPrompt = Render.firstScreen();
+    container.appendChild(userPrompt);
   }
 }
 
