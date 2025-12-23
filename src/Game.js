@@ -9,7 +9,7 @@ const PLAYER_TYPE = {
 // Game controller - interacts with DOM
 class Game {
   constructor() {
-    this.game = null;
+    this.gameUI = null;
     this.player1 = null;
     this.player2 = new Player(PLAYER_TYPE.BOT);
     this.container = document.querySelector('.container');
@@ -20,15 +20,31 @@ class Game {
   addListeners() {
     const form = document.querySelector('#user-name-form');
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const userName = e.target.elements['user-name'].value;
-      this.player1 = new Player(PLAYER_TYPE.HUMAN, userName);
-      Render.removeFromDOM('.user-prompt');
-      this.game = Render.gameboards(userName);
-      this.container.appendChild(this.game.root);
+    form.addEventListener('submit', this.#startGame);
+
+    this.container.addEventListener('click', (e) => {
+      const square = e.target.closest('.gameboard.enemy .square');
+      if (!square) return;
+
+      console.log(square.dataset.row, square.dataset.col);
+
+      console.log(
+        this.player2.gameboard.receiveAttack(
+          square.dataset.row,
+          square.dataset.col,
+        ),
+      );
     });
   }
+
+  #startGame = (e) => {
+    e.preventDefault();
+    const userName = e.target.elements['user-name'].value;
+    this.player1 = new Player(PLAYER_TYPE.HUMAN, userName);
+    Render.removeFromDOM('.user-prompt');
+    this.gameUI = Render.gameboards(userName);
+    this.container.appendChild(this.gameUI.root);
+  };
 
   init() {
     const userPrompt = Render.firstScreen();
