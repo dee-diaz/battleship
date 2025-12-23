@@ -117,7 +117,7 @@ h1 {
   text-align: center;
   font-size: clamp(3rem, 2.705rem + 1.48vw, 3.813rem);
   font-weight: 700;
-  margin-bottom: 2.5rem;
+  margin-top: 2.5rem;
 }
 
 .user-prompt {
@@ -126,6 +126,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 2.5rem;
 
   > p {
     color: hsl(194, 34%, 79%);
@@ -171,7 +172,8 @@ h1 {
       font-weight: 500;
       transition: background 0.4s ease transform 0.4 ease-out;
 
-      &:hover, &:active {
+      &:hover,
+      &:active {
         background: hsl(186, 54%, 71%);
       }
 
@@ -182,18 +184,112 @@ h1 {
   }
 }
 
+.game {
+  margin-top: 2rem;
+  .status-panel {
+    width: fit-content;
+    margin-inline: auto;
+    display: flex;
+    padding: 1rem 3.75rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    background: rgba(156, 217, 224, 0.12);
+    color: hsl(186, 54%, 81%);
+    font-size: clamp(1.25rem, 1.159rem + 0.45vw, 1.5rem);
+    font-weight: 500;
+    margin-bottom: clamp(3rem, 2.636rem + 1.82vw, 4rem);
+  }
+
+  .gameboards-container {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 30rem;
+    margin: 0 auto;
+
+    .player-id {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.75rem 0;
+      color: #fff;
+      font-size: 1.125rem;
+      font-weight: 500;
+      border: 1px solid rgba(156, 217, 224, 0.12);
+      margin-bottom: 1.5rem;
+
+      &.user {
+        background: hsl(214, 60%, 18%);
+      }
+
+      &.enemy {
+        background: hsl(0, 56%, 26%);
+      }
+    }
+
+    .gameboard {
+      width: 30rem;
+      height: 30rem;
+      border: 1px solid hsla(230, 77%, 60%, 0.5);
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+
+      .square {
+        border: 1px solid hsla(230, 77%, 60%, 0.2);
+        transition: background 0.2s ease;
+  
+        &:hover {
+          background: hsla(214, 60%, 44%, 1);
+        }
+      }
+    }
+
+  }
+}
+
 @media (min-width: 992px) {
   .container {
     max-width: 960px;
   }
 
-  h1 {
-    margin-bottom: 4rem;
+  .game {
+    .gameboards-container {
+      width: 100%;
+      margin: initial;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .player {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .player-id {
+        width: 100%;
+        font-size: 1.25rem;
+      }
+
+      .gameboard {
+        width: 25rem;
+        height: 25rem;
+      }
+    }
   }
 }
 
 @media (min-width: 1200px) {
   .container {
     max-width: 1140px;
+  }
+
+  .game {
+    .gameboards-container {
+      .gameboard {
+        width: 30rem;
+        height: 30rem;
+      }
+    }
   }
 }
