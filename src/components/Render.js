@@ -99,7 +99,12 @@ class Render {
     gameCont.appendChild(statusPanel);
     gameCont.appendChild(gameboardsCont);
 
-    return gameCont;
+    return {
+      root: gameCont,
+      statusPanel,
+      boardUser: gameboard1,
+      boardEnemy: gameboard2,
+    };
   }
 }
 

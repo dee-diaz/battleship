@@ -9,6 +9,7 @@ const PLAYER_TYPE = {
 // Game controller - interacts with DOM
 class Game {
   constructor() {
+    this.game = null;
     this.player1 = null;
     this.player2 = new Player(PLAYER_TYPE.BOT);
     this.container = document.querySelector('.container');
@@ -24,8 +25,8 @@ class Game {
       const userName = e.target.elements['user-name'].value;
       this.player1 = new Player(PLAYER_TYPE.HUMAN, userName);
       Render.removeFromDOM('.user-prompt');
-      const gameboards = Render.gameboards(userName);
-      this.container.appendChild(gameboards);
+      this.game = Render.gameboards(userName);
+      this.container.appendChild(this.game.root);
     });
   }
 
