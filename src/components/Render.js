@@ -72,7 +72,7 @@ class Render {
     player2Id.textContent = `Enemy waters`;
 
     const gameboard2 = document.createElement('div');
-    gameboard2.className = 'gameboard';
+    gameboard2.className = 'gameboard enemy';
 
     player2.appendChild(player2Id);
 
