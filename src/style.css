@@ -1,7 +1,5 @@
 :root {
-  --system-ui:
-    system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --clr-bg: hsla(214, 60%, 24%, 1);
 }
 
 *,
@@ -34,11 +32,12 @@ ul {
 }
 
 body {
-  font-family: var(--system-ui);
+  font-family: 'Inter', sans-serif;
   min-height: 100vh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-size-adjust: 0.52;
+  background: var(--clr-bg);
 }
 
 h1,
@@ -60,6 +59,7 @@ h4 {
 
 p {
   text-wrap: pretty;
+  margin: 0;
 }
 
 p,
@@ -102,15 +102,93 @@ select {
   }
 }
 
+.wrapper {
+  min-height: 100vh;
+}
+
 .container {
   width: 100%;
   padding: 0 1rem;
   margin-inline: auto;
 }
 
+h1 {
+  color: hsl(186, 54%, 81%);
+  text-align: center;
+  font-size: clamp(3rem, 2.705rem + 1.48vw, 3.813rem);
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+
+.user-prompt {
+  width: fit-content;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > p {
+    color: hsl(194, 34%, 79%);
+    font-size: clamp(1.25rem, 1.159rem + 0.45vw, 1.5rem);
+    font-weight: 500;
+    margin-bottom: 2rem;
+  }
+
+  form {
+    width: 100%;
+
+    .form-control {
+      margin-bottom: 2.5rem;
+    }
+
+    input {
+      border: none;
+      height: 3rem;
+      padding: 0.875rem 1.25rem;
+      border-radius: 0.25rem;
+      border: 1px solid hsl(214, 60%, 27%);
+      background: hsl(214, 60%, 18%);
+      color: hsl(194, 34%, 79%);
+      font-size: 1.125rem;
+
+      &::placeholder {
+        color: hsl(214, 60%, 65%);
+        font-size: 1.125rem;
+        font-weight: 400;
+      }
+    }
+
+    button {
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.25rem;
+      margin-inline: auto;
+      display: block;
+      text-transform: none;
+      border: none;
+      background: hsl(186, 54%, 81%);
+      color: hsl(214, 60%, 24%);
+      font-size: 1.125rem;
+      font-weight: 500;
+      transition: background 0.4s ease transform 0.4 ease-out;
+
+      &:hover, &:active {
+        background: hsl(186, 54%, 71%);
+      }
+
+      &:active {
+        transform: scale(0.99);
+      }
+    }
+  }
+}
+
 @media (min-width: 992px) {
   .container {
     max-width: 960px;
+  }
+
+  h1 {
+    margin-bottom: 4rem;
   }
 }
 
