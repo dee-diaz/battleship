@@ -9,9 +9,20 @@ const PLAYER_TYPE = {
 // Game controller - interacts with DOM
 class Game {
   constructor() {
-    this.player1 = new Player(PLAYER_TYPE.HUMAN, 'Dee');
+    this.player1 = null;
     this.player2 = new Player(PLAYER_TYPE.BOT);
     this.init();
+    this.addListeners();
+  }
+
+  addListeners() {
+    const form = document.querySelector('#user-name-form');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userName = e.target.elements['user-name'].value;
+      this.player1 = new Player(PLAYER_TYPE.HUMAN, userName);
+    });
   }
 
   init() {
