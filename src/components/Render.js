@@ -33,6 +33,11 @@ class Render {
 
     return userPrompt;
   }
+
+  static removeFromDOM(selector) {
+    const el = document.querySelector(selector);
+    el.remove();
+  }
 }
 
 export default Render;
