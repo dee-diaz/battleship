@@ -15,7 +15,6 @@ class Render {
     const input = document.createElement('input');
     input.type = 'text';
     input.name = 'user-name';
-    input.id = 'input-name';
     input.placeholder = 'Enter your name';
     input.minLength = 2;
     input.required = true;
