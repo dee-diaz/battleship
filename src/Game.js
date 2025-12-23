@@ -1,4 +1,5 @@
 import Player from './components/Player';
+import Render from './components/Render';
 
 const PLAYER_TYPE = {
   HUMAN: 'human',
@@ -10,6 +11,7 @@ class Game {
   constructor() {
     this.player1 = new Player(PLAYER_TYPE.HUMAN, 'Dee');
     this.player2 = new Player(PLAYER_TYPE.BOT);
+    this.ui = new Render();
   }
 }
 
