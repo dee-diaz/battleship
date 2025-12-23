@@ -161,7 +161,7 @@ class Gameboard {
       this.grid.set(`${x}-${y}`, 0);
       return 'Miss';
     } else {
-      return 'No effect';
+      return;
     }
   }
 
