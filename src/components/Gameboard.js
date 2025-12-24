@@ -15,9 +15,11 @@ export const AXIS = {
 };
 
 class Gameboard {
+  #shipPositions;
   constructor() {
     this.grid = this.#buildGrid();
     this.fleet = this.createFleet();
+    this.#shipPositions = new Map();
   }
 
   #buildGrid(size = 10) {
@@ -74,6 +76,11 @@ class Gameboard {
         `${currentRow}-${currentCol + 1}`,
         `${ROWS[ROWS.indexOf(currentRow) - 1]}-${currentCol}`,
         `${ROWS[ROWS.indexOf(currentRow) + 1]}-${currentCol}`,
+
+        `${ROWS[ROWS.indexOf(currentRow) + 1]}-${currentCol - 1}`,
+        `${ROWS[ROWS.indexOf(currentRow) + 1]}-${currentCol + 1}`,
+        `${ROWS[ROWS.indexOf(currentRow) - 1]}-${currentCol - 1}`,
+        `${ROWS[ROWS.indexOf(currentRow) - 1]}-${currentCol + 1}`,
       ];
 
       // Adjacent placement check
@@ -109,6 +116,7 @@ class Gameboard {
       }
     }
 
+    this.#shipPositions.set(ship.name, coords);
     return coords;
   }
 
@@ -171,6 +179,10 @@ class Gameboard {
     );
 
     return !hasShipsLeft;
+  }
+
+  get shipPositions() {
+    return new Map(this.#shipPositions);
   }
 }
 
