@@ -106,6 +106,22 @@ class Render {
       boardEnemy: gameboard2,
     };
   }
+
+  static ships(gameboardEl, coords) {
+    for (const [key, value] of coords.entries()) {
+      console.log(key, value);
+
+      value.forEach((coord) => {
+        const row = coord.split('-')[0];
+        const col = coord.split('-')[1];
+
+        const squareEl = gameboardEl.querySelector(
+          `[data-row="${row}"][data-col="${col}"]`,
+        );
+        squareEl.classList.add('ship');
+      });
+    }
+  }
 }
 
 export default Render;

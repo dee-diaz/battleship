@@ -237,12 +237,18 @@ h1 {
 
       .square {
         border: 1px solid hsla(230, 77%, 60%, 0.2);
+
+        &.ship {
+          background: hsla(230, 77%, 60%, 0.2);
+          border-color: hsl(230, 77%, 60%);
+        }
       }
 
       &.enemy {
         .square {
           transition: background 0.2s ease;
-          &:hover, &:active {
+          &:hover,
+          &:active {
             background: hsla(214, 60%, 44%, 1);
           }
         }

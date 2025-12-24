@@ -44,6 +44,7 @@ class Game {
     Render.removeFromDOM('.user-prompt');
     this.gameUI = Render.gameboards(userName);
     this.container.appendChild(this.gameUI.root);
+    Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
   };
 
   init() {
