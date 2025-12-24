@@ -36,6 +36,10 @@ class Game {
 
     console.log(attackResult);
 
+    if (attackResult.includes('Game over')) {
+      Render.gameOver();
+    }
+
     if (attackResult.includes('sunk')) {
       const shipName = attackResult.split(' ')[0];
       console.log(shipName);

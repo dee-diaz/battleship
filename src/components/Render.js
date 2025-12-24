@@ -110,9 +110,8 @@ class Render {
   }
 
   static ships(gameboardEl, coords) {
+    // eslint-disable-next-line no-unused-vars
     for (const [key, value] of coords.entries()) {
-      console.log(key, value);
-
       value.forEach((coord) => {
         const row = coord.split('-')[0];
         const col = coord.split('-')[1];
@@ -147,6 +146,11 @@ class Render {
 
     if (!squareEl.querySelector('img')) squareEl.appendChild(icon);
     squareEl.classList.add('disabled');
+  }
+
+  static gameOver() {
+    const gameboard = document.querySelector('.gameboard.enemy');
+    gameboard.classList.add('disabled');
   }
 }
 

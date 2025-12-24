@@ -235,6 +235,10 @@ h1 {
       grid-template-columns: repeat(10, 1fr);
       grid-template-rows: repeat(10, 1fr);
 
+      &.disabled {
+        pointer-events: none;
+      }
+
       .square {
         display: flex;
         justify-content: center;
