@@ -22,20 +22,22 @@ class Game {
 
     form.addEventListener('submit', this.#startGame);
 
-    this.container.addEventListener('click', (e) => {
-      const square = e.target.closest('.gameboard.enemy .square');
-      if (!square) return;
-
-      console.log(square.dataset.row, square.dataset.col);
-
-      console.log(
-        this.player2.gameboard.receiveAttack(
-          square.dataset.row,
-          square.dataset.col,
-        ),
-      );
-    });
+    this.container.addEventListener('click', this.#attack);
   }
+
+  #attack = (e) => {
+    const square = e.target.closest('.gameboard.enemy .square');
+    if (!square) return;
+
+    const attackResult = this.player2.gameboard.receiveAttack(
+      square.dataset.row,
+      square.dataset.col,
+    );
+
+    console.log(attackResult);
+
+    Render.attack(square.dataset.row, square.dataset.col, attackResult);
+  };
 
   #startGame = (e) => {
     e.preventDefault();

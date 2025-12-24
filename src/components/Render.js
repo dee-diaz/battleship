@@ -1,4 +1,6 @@
 import { ROWS } from './Gameboard';
+import iconSplash from '../icons/icon-splash.svg';
+import iconHit from '../icons/icon-hit.svg';
 
 class Render {
   static firstScreen() {
@@ -121,6 +123,24 @@ class Render {
         squareEl.classList.add('ship');
       });
     }
+  }
+
+  static attack(row, col, message) {
+    const enemyBoard = document.querySelector('.gameboard.enemy');
+    const squareEl = enemyBoard.querySelector(
+      `[data-row="${row}"][data-col="${col}"]`,
+    );
+    const icon = document.createElement('img');
+
+    if (message === 'Miss') {
+      icon.src = iconSplash;
+    } else if (message.includes('hit') || message.includes('sunk')) {
+      icon.src = iconHit;
+      squareEl.classList.add('hit');
+    }
+
+    squareEl.appendChild(icon);
+    squareEl.classList.add('disabled');
   }
 }
 

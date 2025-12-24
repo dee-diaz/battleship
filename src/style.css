@@ -236,11 +236,22 @@ h1 {
       grid-template-rows: repeat(10, 1fr);
 
       .square {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border: 1px solid hsla(230, 77%, 60%, 0.2);
 
         &.ship {
           background: hsla(230, 77%, 60%, 0.2);
           border-color: hsl(230, 77%, 60%);
+        }
+
+        &.disabled {
+          pointer-events: none;
+        }
+
+        &.hit {
+          background: hsla(3, 79%, 57%, 0.2);
         }
       }
 
