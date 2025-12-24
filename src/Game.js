@@ -36,6 +36,20 @@ class Game {
 
     console.log(attackResult);
 
+    if (attackResult.includes('sunk')) {
+      const shipName = attackResult.split(' ')[0];
+      console.log(shipName);
+      const shipPositions = this.player2.gameboard.shipPositions;
+      const sunkShipCoords = shipPositions.get(shipName);
+
+      sunkShipCoords.forEach((coord) => {
+        const row = coord.split('-')[0];
+        const col = coord.split('-')[1];
+
+        Render.attack(row, col, 'sunk');
+      });
+    }
+
     Render.attack(square.dataset.row, square.dataset.col, attackResult);
   };
 

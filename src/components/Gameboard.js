@@ -162,7 +162,7 @@ class Gameboard {
 
       return ship.isSunk()
         ? this.#allShipsSunk()
-          ? 'Game over. All ships have been sunk'
+          ? `${ship.name} got sunk. Game over. You lost`
           : `${ship.name} got sunk`
         : `${ship.name} got hit`;
     } else if (this.grid.get(`${x}-${y}`) === 1) {

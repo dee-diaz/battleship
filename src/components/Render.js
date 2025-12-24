@@ -131,15 +131,21 @@ class Render {
       `[data-row="${row}"][data-col="${col}"]`,
     );
     const icon = document.createElement('img');
+    let shipSquares = [];
 
     if (message === 'Miss') {
       icon.src = iconSplash;
-    } else if (message.includes('hit') || message.includes('sunk')) {
+    } else if (message.includes('hit')) {
       icon.src = iconHit;
       squareEl.classList.add('hit');
+      shipSquares.push([row, col]);
+    } else if (message.includes('sunk')) {
+      if (!squareEl.classList.contains('hit')) squareEl.classList.add('hit');
+      icon.src = iconHit;
+      squareEl.classList.add('sunk');
     }
 
-    squareEl.appendChild(icon);
+    if (!squareEl.querySelector('img')) squareEl.appendChild(icon);
     squareEl.classList.add('disabled');
   }
 }

@@ -253,6 +253,10 @@ h1 {
         &.hit {
           background: hsla(3, 79%, 57%, 0.2);
         }
+
+        &.sunk {
+          border-color: hsl(3, 79%, 57%);
+        }
       }
 
       &.enemy {
