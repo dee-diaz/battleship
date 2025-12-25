@@ -14,6 +14,10 @@ class Game {
     this.gameUI = null;
     this.player1 = null;
     this.currentTurn = null;
+    this.lastHitCell = null;
+    this.hitCells = [];
+    this.targetQueue = [];
+    this.attackDirection = null;
     this.player2 = new Player(PLAYER_TYPE.BOT);
     this.container = document.querySelector('.container');
     this.init();
@@ -40,16 +44,7 @@ class Game {
     this.changeStatus(attackResult);
 
     if (attackResult.includes('sunk')) {
-      const shipName = attackResult.split(' ')[0];
-      const shipPositions = this.player2.gameboard.shipPositions;
-      const sunkShipCoords = shipPositions.get(shipName);
-
-      sunkShipCoords.forEach((coord) => {
-        const row = coord.split('-')[0];
-        const col = coord.split('-')[1];
-
-        Render.attack(this.gameUI.boardEnemy, row, col, 'sunk');
-      });
+      this.handleSunkRender(attackResult, this.player2);
     }
 
     Render.attack(
@@ -64,6 +59,23 @@ class Game {
     }
   };
 
+  handleSunkRender(attackRes, player) {
+    const shipName = attackRes.split(' ')[0];
+    const shipPositions = player.gameboard.shipPositions;
+    const sunkShipCoords = shipPositions.get(shipName);
+
+    sunkShipCoords.forEach((coord) => {
+      const row = coord.split('-')[0];
+      const col = coord.split('-')[1];
+
+      if (player.name === this.player1.name) {
+        Render.attack(this.gameUI.boardUser, row, col, 'sunk');
+      } else {
+        Render.attack(this.gameUI.boardEnemy, row, col, 'sunk');
+      }
+    });
+  }
+
   #botAttack = async () => {
     const hasAvailableCells = Array.from(
       this.player1.gameboard.grid.values(),
@@ -73,34 +85,94 @@ class Game {
       return;
     }
 
-    const randomRow = ROWS[randomInt(0, 9)];
-    const randomCol = randomInt(1, 10);
-    const cellValue = this.player1.gameboard.grid.get(
-      `${randomRow}-${randomCol}`,
-    );
+    let targetRow, targetCol;
 
-    if (cellValue === 0) {
-      await this.#botAttack();
-      return;
+    if (this.targetQueue.length > 0) {
+      [targetRow, targetCol] = this.targetQueue.shift();
+
+      const cellValue = this.player1.gameboard.grid.get(
+        `${targetRow}-${targetCol}`,
+      );
+
+      if (!cellValue || cellValue === 0) {
+        await this.#botAttack();
+        return;
+      }
+    } else {
+      do {
+        targetRow = ROWS[randomInt(0, 9)];
+        targetCol = randomInt(1, 10);
+      } while (
+        this.player1.gameboard.grid.get(`${targetRow}-${targetCol}`) === 0
+      );
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const attackResult = this.player1.gameboard.receiveAttack(
-      randomRow,
-      randomCol,
+      targetRow,
+      targetCol,
     );
 
-    Render.attack(this.gameUI.boardUser, randomRow, randomCol, attackResult);
+    if (attackResult.includes('sunk')) {
+      this.handleSunkRender(attackResult, this.player1);
+    }
 
+    Render.attack(this.gameUI.boardUser, targetRow, targetCol, attackResult);
     this.changeStatus(attackResult);
 
-    if (attackResult !== 'Miss') {
+    if (attackResult.includes('hit')) {
+      this.hitCells.push([targetRow, targetCol]);
+
+      if (this.hitCells.length === 1) {
+        this.#addNeighborsToQueue(targetRow, targetCol);
+      } else {
+        this.#addDirectionalTargets(targetRow, targetCol);
+      }
+
+      await this.#botAttack();
+    } else if (attackResult.includes('sunk')) {
+      this.hitCells = [];
+      this.targetQueue = [];
       await this.#botAttack();
     } else {
       await this.endTurn();
     }
   };
+
+  #addNeighborsToQueue(row, col) {
+    const rowIndex = ROWS.indexOf(row);
+
+    const neighbors = [
+      [ROWS[rowIndex - 1], col],
+      [ROWS[rowIndex + 1], col],
+      [row, col - 1],
+      [row, col + 1],
+    ];
+
+    neighbors.forEach(([r, c]) => {
+      if (r && c >= 1 && c <= 10) {
+        const cellValue = this.player1.gameboard.grid.get(`${r}-${c}`);
+        if (cellValue && cellValue !== 0) {
+          this.targetQueue.push([r, c]);
+        }
+      }
+    });
+  }
+
+  #addDirectionalTargets(row, col) {
+    const [prevRow, prevCol] = this.hitCells[this.hitCells.length - 2];
+
+    if (prevRow === row) {
+      const direction = col > prevCol ? 1 : -1;
+      this.targetQueue = [[row, col + direction]];
+    } else {
+      const rowIndex = ROWS.indexOf(row);
+      const prevRowIndex = ROWS.indexOf(prevRow);
+      const direction = rowIndex > prevRowIndex ? 1 : -1;
+      this.targetQueue = [[ROWS[rowIndex + direction], col]];
+    }
+  }
 
   async endTurn() {
     this.currentTurn === this.player1.name
