@@ -1,4 +1,5 @@
 import Ship from './Ship';
+import { randomInt } from './utils';
 
 export const ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
@@ -121,9 +122,6 @@ class Gameboard {
   }
 
   placeShips() {
-    const randomInt = (min, max) =>
-      Math.floor(Math.random() * (max - min + 1)) + min;
-
     this.fleet.forEach((ship) => {
       let coords = null;
       let attempts = 0;

@@ -124,9 +124,8 @@ class Render {
     }
   }
 
-  static attack(row, col, message) {
-    const enemyBoard = document.querySelector('.gameboard.enemy');
-    const squareEl = enemyBoard.querySelector(
+  static attack(gameboardEl, row, col, message) {
+    const squareEl = gameboardEl.querySelector(
       `[data-row="${row}"][data-col="${col}"]`,
     );
     const icon = document.createElement('img');
@@ -148,9 +147,15 @@ class Render {
     squareEl.classList.add('disabled');
   }
 
-  static gameOver() {
+  static gameOver(statusPanelEl, message) {
     const gameboard = document.querySelector('.gameboard.enemy');
     gameboard.classList.add('disabled');
+
+    this.status(statusPanelEl, message);
+  }
+
+  static status(statusPanelEl, message) {
+    statusPanelEl.innerText = message;
   }
 }
 
