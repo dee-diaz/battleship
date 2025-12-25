@@ -120,6 +120,29 @@ h1 {
   margin-top: 2.5rem;
 }
 
+button {
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+  margin-inline: auto;
+  display: block;
+  text-transform: none;
+  border: none;
+  background: hsl(186, 54%, 81%);
+  color: hsl(214, 60%, 24%);
+  font-size: 1.125rem;
+  font-weight: 500;
+  transition: background 0.4s ease transform 0.4 ease-out;
+
+  &:hover,
+  &:active {
+    background: hsl(186, 54%, 71%);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
 .user-prompt {
   width: fit-content;
   margin-inline: auto;
@@ -158,34 +181,12 @@ h1 {
         font-weight: 400;
       }
     }
-
-    button {
-      padding: 0.75rem 1.25rem;
-      border-radius: 0.25rem;
-      margin-inline: auto;
-      display: block;
-      text-transform: none;
-      border: none;
-      background: hsl(186, 54%, 81%);
-      color: hsl(214, 60%, 24%);
-      font-size: 1.125rem;
-      font-weight: 500;
-      transition: background 0.4s ease transform 0.4 ease-out;
-
-      &:hover,
-      &:active {
-        background: hsl(186, 54%, 71%);
-      }
-
-      &:active {
-        transform: scale(0.99);
-      }
-    }
   }
 }
 
 .game {
   margin-top: 2rem;
+  margin-bottom: 4rem;
   .status-panel {
     width: 35rem;
     margin-inline: auto;

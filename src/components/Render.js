@@ -157,6 +157,12 @@ class Render {
   static status(statusPanelEl, message) {
     statusPanelEl.innerText = message;
   }
+
+  static restartBtn() {
+    const button = document.createElement('button');
+    button.textContent = 'Play Again';
+    return button;
+  }
 }
 
 export default Render;

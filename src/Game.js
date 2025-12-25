@@ -66,6 +66,9 @@ class Game {
         attackResult,
       );
 
+      const btn = Render.restartBtn();
+      this.container.appendChild(btn);
+
       return;
     }
 
@@ -146,6 +149,8 @@ class Game {
 
       if (attackResult.includes('Game over')) {
         this.changeStatus(`${this.player2.name} ${STATUS.WIN}`);
+        const btn = Render.restartBtn();
+        this.container.appendChild(btn);
         return;
       }
     }
