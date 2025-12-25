@@ -8,6 +8,13 @@ const PLAYER_TYPE = {
   BOT: 'bot',
 };
 
+const STATUS = {
+  MISS: 'shoots and misses',
+  HIT: 'shoots and hits',
+  SINK: "sinks the enemy's ship",
+  WIN: 'won. Game over',
+};
+
 // Game controller - interacts with DOM
 class Game {
   constructor() {
@@ -41,10 +48,25 @@ class Game {
       square.dataset.col,
     );
 
-    this.changeStatus(attackResult);
+    if (attackResult.includes('hit'))
+      this.changeStatus(`${this.player1.name} ${STATUS.HIT}`);
 
     if (attackResult.includes('sunk')) {
+      this.changeStatus(`${this.player1.name} ${STATUS.SINK}`);
       this.handleSunkRender(attackResult, this.player2);
+    }
+
+    if (attackResult.includes('Game over')) {
+      this.changeStatus(`${this.player1.name} ${STATUS.WIN}`);
+
+      Render.attack(
+        this.gameUI.boardEnemy,
+        square.dataset.row,
+        square.dataset.col,
+        attackResult,
+      );
+
+      return;
     }
 
     Render.attack(
@@ -55,6 +77,7 @@ class Game {
     );
 
     if (attackResult === 'Miss') {
+      this.changeStatus(`${this.player1.name} ${STATUS.MISS}`);
       await this.endTurn();
     }
   };
@@ -114,14 +137,23 @@ class Game {
       targetCol,
     );
 
+    if (attackResult === 'Miss')
+      this.changeStatus(`${this.player2.name} ${STATUS.MISS}`);
+
     if (attackResult.includes('sunk')) {
+      this.changeStatus(`${this.player2.name} ${STATUS.SINK}`);
       this.handleSunkRender(attackResult, this.player1);
+
+      if (attackResult.includes('Game over')) {
+        this.changeStatus(`${this.player2.name} ${STATUS.WIN}`);
+        return;
+      }
     }
 
     Render.attack(this.gameUI.boardUser, targetRow, targetCol, attackResult);
-    this.changeStatus(attackResult);
 
     if (attackResult.includes('hit')) {
+      this.changeStatus(`${this.player2.name} ${STATUS.HIT}`);
       this.hitCells.push([targetRow, targetCol]);
 
       if (this.hitCells.length === 1) {
@@ -195,7 +227,7 @@ class Game {
 
   changeStatus(status) {
     if (status.includes('Game over')) {
-      Render.gameOver(this.gameUI.statusPanel, 'Game over');
+      Render.gameOver(this.gameUI.statusPanel, status);
     } else {
       Render.status(this.gameUI.statusPanel, status);
     }
