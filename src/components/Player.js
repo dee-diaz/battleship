@@ -7,6 +7,11 @@ class Player {
     this.gameboard = new Gameboard();
     this.gameboard.placeShips();
   }
+
+  resetGameboard() {
+    this.gameboard = new Gameboard();
+    this.gameboard.placeShips();
+  }
 }
 
 export default Player;

@@ -163,6 +163,12 @@ class Render {
     button.textContent = 'Play Again';
     return button;
   }
+
+  static pageTitle() {
+    const h1 = document.createElement('h1');
+    h1.textContent = 'Battleship';
+    return h1;
+  }
 }
 
 export default Render;

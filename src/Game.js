@@ -36,7 +36,29 @@ class Game {
 
     form.addEventListener('submit', this.#startGame);
 
-    this.container.addEventListener('click', this.#attack);
+    this.container.addEventListener('click', (e) => {
+      if (e.target.id === 'btn-replay') {
+        this.restartGame();
+      } else {
+        this.#attack(e);
+      }
+    });
+  }
+
+  restartGame() {
+    this.player1.resetGameboard();
+    this.player2.resetGameboard();
+    this.container.innerHTML = '';
+    this.container.appendChild(Render.pageTitle());
+    this.gameUI = Render.gameboards(this.player1.name);
+    this.container.appendChild(this.gameUI.root);
+    Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
+    // this.gameUI = null;
+    this.currentTurn = this.player1.name;
+    this.lastHitCell = null;
+    this.hitCells = [];
+    this.targetQueue = [];
+    this.attackDirection = null;
   }
 
   #attack = async (e) => {
@@ -67,6 +89,7 @@ class Game {
       );
 
       const btn = Render.restartBtn();
+      btn.id = 'btn-replay';
       this.container.appendChild(btn);
 
       return;
@@ -150,6 +173,7 @@ class Game {
       if (attackResult.includes('Game over')) {
         this.changeStatus(`${this.player2.name} ${STATUS.WIN}`);
         const btn = Render.restartBtn();
+        btn.id = 'btn-replay';
         this.container.appendChild(btn);
         return;
       }
@@ -244,7 +268,7 @@ class Game {
     this.player1 = new Player(PLAYER_TYPE.HUMAN, userName);
     this.currentTurn = this.player1.name;
     Render.removeFromDOM('.user-prompt');
-    this.gameUI = Render.gameboards(userName);
+    this.gameUI = Render.gameboards(this.player1.name);
     this.container.appendChild(this.gameUI.root);
     Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
   };
