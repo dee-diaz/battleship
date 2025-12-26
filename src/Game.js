@@ -3,7 +3,7 @@ import Render from './components/Render';
 import { randomInt } from './components/utils';
 import { ROWS } from './components/Gameboard';
 
-const PLAYER_TYPE = {
+export const PLAYER_TYPE = {
   HUMAN: 'human',
   BOT: 'bot',
 };
