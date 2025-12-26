@@ -53,7 +53,6 @@ class Game {
     this.gameUI = Render.gameboards(this.player1.name);
     this.container.appendChild(this.gameUI.root);
     Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
-    // this.gameUI = null;
     this.currentTurn = this.player1.name;
     this.lastHitCell = null;
     this.hitCells = [];
