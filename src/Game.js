@@ -1,7 +1,7 @@
 import Player from './components/Player';
 import Render from './components/Render';
 import { randomInt } from './components/utils';
-import { ROWS } from './components/Gameboard';
+import { AXIS, ROWS, SHIPS } from './components/Gameboard';
 
 export const PLAYER_TYPE = {
   HUMAN: 'human',
@@ -25,6 +25,9 @@ class Game {
     this.hitCells = [];
     this.targetQueue = [];
     this.attackDirection = null;
+    this._shipToPlaceIndex = 0;
+    this._shipsPlaced = false;
+    this._placementOrientation = AXIS.X;
     this.player2 = new Player(PLAYER_TYPE.BOT);
     this.container = document.querySelector('.container');
     this.init();
@@ -58,6 +61,8 @@ class Game {
     this.hitCells = [];
     this.targetQueue = [];
     this.attackDirection = null;
+    this._shipToPlaceIndex = 0;
+    this._shipsPlaced = false;
   }
 
   #attack = async (e) => {
@@ -273,10 +278,78 @@ class Game {
     const placementBtns = Render.axisBtns();
     this.gameUI.statusPanel.after(placementBtns);
 
-    // this.gameUI.boardUser.addEventListener('mouseover', () => {
+    const shipsArr = Object.values(SHIPS);
 
-    // })
-    // Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
+    this.gameUI.boardUser.addEventListener('mouseover', (e) => {
+      if (!e.target.closest('.square')) return;
+      const currentSquare = e.target.closest('.square');
+      const row = currentSquare.dataset.row;
+      const col = currentSquare.dataset.col;
+
+      const markedCells = this.gameUI.boardUser.querySelectorAll(
+        '.ship-preview, .out-of-bounds',
+      );
+      markedCells.forEach((cell) => {
+        if (cell !== currentSquare) {
+          cell.classList.remove('ship-preview', 'out-of-bounds');
+        }
+      });
+
+      const fleet = this.player1.gameboard.fleet;
+
+      try {
+        const coords = this.player1.gameboard.placeShipAt(
+          fleet.get(shipsArr[this._shipToPlaceIndex]),
+          row,
+          col,
+          this._placementOrientation,
+        );
+
+        Render.targetShipLocation(this.gameUI.boardUser, coords);
+      } catch (error) {
+        Render.targetShipLocation(this.gameUI.boardUser, `${row}-${col}`);
+      }
+    });
+
+    this.gameUI.boardUser.addEventListener('click', (e) => {
+      if (!e.target.closest('.square')) return;
+      const currentSquare = e.target.closest('.square');
+      const row = currentSquare.dataset.row;
+      const col = currentSquare.dataset.col;
+
+      const ship = this.player1.gameboard.fleet.get(
+        shipsArr[this._shipToPlaceIndex],
+      );
+
+      try {
+        this.player1.gameboard.placeShipAt(
+          ship,
+          row,
+          col,
+          this._placementOrientation,
+          'placement',
+        );
+
+        Render.ships(
+          this.gameUI.boardUser,
+          this.player1.gameboard.shipPositions,
+        );
+
+        if (this._shipToPlaceIndex < 5) this._shipToPlaceIndex++;
+        if (this._shipToPlaceIndex === 5) {
+          this._shipsPlaced = true;
+          this._shipToPlaceIndex = 0;
+        }
+        
+        if (this._shipsPlaced) {
+          Render.toggleGameboardInteractivity(this.gameUI.boardUser);
+          Render.removeFromDOM('.placement-buttons');
+        }
+        
+      } catch (error) {
+        console.error('Cannot place ship here:', error.message);
+      }
+    });
   };
 
   init() {

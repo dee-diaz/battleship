@@ -50,7 +50,7 @@ describe('Gameboard', () => {
     });
   });
 
-  describe('_placeShipAt (core logic)', () => {
+  describe('placeShipAt (core logic)', () => {
     let fleet;
     beforeEach(() => {
       fleet = gameboard.createFleet();
@@ -59,7 +59,7 @@ describe('Gameboard', () => {
     describe('valid vertical placements', () => {
       it('places ship of length 2 vertically', () => {
         const destroyer = fleet.get(SHIPS.DESTROYER);
-        expect(gameboard._placeShipAt(destroyer, ROWS[1], 4, AXIS.Y)).toEqual([
+        expect(gameboard.placeShipAt(destroyer, ROWS[1], 4, AXIS.Y)).toEqual([
           'B-4',
           'C-4',
         ]);
@@ -67,7 +67,7 @@ describe('Gameboard', () => {
 
       it('places ship of length 3 vertically', () => {
         const submarine = fleet.get(SHIPS.SUBMARINE);
-        expect(gameboard._placeShipAt(submarine, ROWS[1], 4, AXIS.Y)).toEqual([
+        expect(gameboard.placeShipAt(submarine, ROWS[1], 4, AXIS.Y)).toEqual([
           'B-4',
           'C-4',
           'D-4',
@@ -76,7 +76,7 @@ describe('Gameboard', () => {
 
       it('places ship of length 4 vertically', () => {
         const battleship = fleet.get(SHIPS.BATTLESHIP);
-        expect(gameboard._placeShipAt(battleship, ROWS[1], 4, AXIS.Y)).toEqual([
+        expect(gameboard.placeShipAt(battleship, ROWS[1], 4, AXIS.Y)).toEqual([
           'B-4',
           'C-4',
           'D-4',
@@ -85,7 +85,7 @@ describe('Gameboard', () => {
       });
       it('places ship of length 5 vertically', () => {
         const carrier = fleet.get(SHIPS.CARRIER);
-        expect(gameboard._placeShipAt(carrier, ROWS[1], 4, AXIS.Y)).toEqual([
+        expect(gameboard.placeShipAt(carrier, ROWS[1], 4, AXIS.Y)).toEqual([
           'B-4',
           'C-4',
           'D-4',
@@ -96,7 +96,7 @@ describe('Gameboard', () => {
 
       it('places ship at edge of board (bottom edge, vertical)', () => {
         const destroyer = fleet.get(SHIPS.DESTROYER);
-        expect(gameboard._placeShipAt(destroyer, ROWS[8], 4, AXIS.Y)).toEqual([
+        expect(gameboard.placeShipAt(destroyer, ROWS[8], 4, AXIS.Y)).toEqual([
           'I-4',
           'J-4',
         ]);
@@ -106,7 +106,7 @@ describe('Gameboard', () => {
     describe('valid horizontal placements', () => {
       it('places ship of length 2 horizontally', () => {
         const destroyer = fleet.get(SHIPS.DESTROYER);
-        expect(gameboard._placeShipAt(destroyer, ROWS[1], 4, AXIS.X)).toEqual([
+        expect(gameboard.placeShipAt(destroyer, ROWS[1], 4, AXIS.X)).toEqual([
           'B-4',
           'B-5',
         ]);
@@ -114,7 +114,7 @@ describe('Gameboard', () => {
 
       it('places ship of length 3 horizontally', () => {
         const submarine = fleet.get(SHIPS.SUBMARINE);
-        expect(gameboard._placeShipAt(submarine, ROWS[1], 4, AXIS.X)).toEqual([
+        expect(gameboard.placeShipAt(submarine, ROWS[1], 4, AXIS.X)).toEqual([
           'B-4',
           'B-5',
           'B-6',
@@ -123,7 +123,7 @@ describe('Gameboard', () => {
 
       it('places ship of length 4 horizontally', () => {
         const battleship = fleet.get(SHIPS.BATTLESHIP);
-        expect(gameboard._placeShipAt(battleship, ROWS[1], 4, AXIS.X)).toEqual([
+        expect(gameboard.placeShipAt(battleship, ROWS[1], 4, AXIS.X)).toEqual([
           'B-4',
           'B-5',
           'B-6',
@@ -133,7 +133,7 @@ describe('Gameboard', () => {
 
       it('places ship of length 5 horizontally', () => {
         const carrier = fleet.get(SHIPS.CARRIER);
-        expect(gameboard._placeShipAt(carrier, ROWS[1], 4, AXIS.X)).toEqual([
+        expect(gameboard.placeShipAt(carrier, ROWS[1], 4, AXIS.X)).toEqual([
           'B-4',
           'B-5',
           'B-6',
@@ -144,7 +144,7 @@ describe('Gameboard', () => {
 
       it('places ship at edge of board (right edge, horizontal)', () => {
         const destroyer = fleet.get(SHIPS.DESTROYER);
-        expect(gameboard._placeShipAt(destroyer, ROWS[1], 9, AXIS.X)).toEqual([
+        expect(gameboard.placeShipAt(destroyer, ROWS[1], 9, AXIS.X)).toEqual([
           'B-9',
           'B-10',
         ]);
@@ -159,27 +159,27 @@ describe('Gameboard', () => {
 
       it('throws when horizontal ship goes off right edge', () => {
         expect(() =>
-          gameboard._placeShipAt(submarine, ROWS[1], 9, AXIS.X),
+          gameboard.placeShipAt(submarine, ROWS[1], 9, AXIS.X),
         ).toThrow('Out of bounds.');
       });
       it('throws when vertical ship goes off bottom edge', () => {
         expect(() =>
-          gameboard._placeShipAt(submarine, ROWS[8], 1, AXIS.Y),
+          gameboard.placeShipAt(submarine, ROWS[8], 1, AXIS.Y),
         ).toThrow('Out of bounds.');
       });
       it('throws when coordinates are negative', () => {
         expect(() =>
-          gameboard._placeShipAt(submarine, ROWS[1], -2, AXIS.Y),
+          gameboard.placeShipAt(submarine, ROWS[1], -2, AXIS.Y),
         ).toThrow('Enter correct coordinates!');
       });
       it('throws when coordinates exceed board size', () => {
         expect(() =>
-          gameboard._placeShipAt(submarine, ROWS[1], -2, AXIS.Y),
+          gameboard.placeShipAt(submarine, ROWS[1], -2, AXIS.Y),
         ).toThrow('Enter correct coordinates!');
       });
       it('throws when the orientation is incorrect', () => {
         expect(() =>
-          gameboard._placeShipAt(submarine, ROWS[1], 1, 'diagonal'),
+          gameboard.placeShipAt(submarine, ROWS[1], 1, 'diagonal'),
         ).toThrow('Invalid orientation');
       });
     });
@@ -193,30 +193,30 @@ describe('Gameboard', () => {
       });
 
       it('throws when ships overlap completely', () => {
-        gameboard._placeShipAt(submarine, ROWS[1], 4, AXIS.X);
+        gameboard.placeShipAt(submarine, ROWS[1], 4, AXIS.X);
         expect(() =>
-          gameboard._placeShipAt(cruiser, ROWS[1], 4, AXIS.X),
+          gameboard.placeShipAt(cruiser, ROWS[1], 4, AXIS.X),
         ).toThrow("Can't place here.");
       });
 
       it('throws when ships overlap partially', () => {
-        gameboard._placeShipAt(submarine, ROWS[1], 4, AXIS.X);
+        gameboard.placeShipAt(submarine, ROWS[1], 4, AXIS.X);
         expect(() =>
-          gameboard._placeShipAt(cruiser, ROWS[1], 6, AXIS.X),
+          gameboard.placeShipAt(cruiser, ROWS[1], 6, AXIS.X),
         ).toThrow("Can't place here.");
       });
 
       it('throws when ships are adjacent (touching but not overlapping)', () => {
-        gameboard._placeShipAt(submarine, ROWS[4], 5, AXIS.Y);
+        gameboard.placeShipAt(submarine, ROWS[4], 5, AXIS.Y);
         expect(() =>
-          gameboard._placeShipAt(cruiser, ROWS[5], 5, AXIS.Y),
+          gameboard.placeShipAt(cruiser, ROWS[5], 5, AXIS.Y),
         ).toThrow("Can't place here.");
       });
     });
 
     it('marks all occupied cells on the grid', () => {
       const submarine = fleet.get(SHIPS.SUBMARINE);
-      gameboard._placeShipAt(submarine, ROWS[1], 1, AXIS.X);
+      gameboard.placeShipAt(submarine, ROWS[1], 1, AXIS.X);
       expect(gameboard.grid.get(`${ROWS[1]}-1`)).toBe(submarine.name);
       expect(gameboard.grid.get(`${ROWS[1]}-2`)).toBe(submarine.name);
       expect(gameboard.grid.get(`${ROWS[1]}-3`)).toBe(submarine.name);
@@ -243,8 +243,8 @@ describe('Gameboard', () => {
     beforeEach(() => {
       submarine = gameboard.fleet.get(SHIPS.SUBMARINE);
       destroyer = gameboard.fleet.get(SHIPS.DESTROYER);
-      gameboard._placeShipAt(submarine, ROWS[1], 1, AXIS.Y);
-      gameboard._placeShipAt(destroyer, ROWS[8], 1, AXIS.X);
+      gameboard.placeShipAt(submarine, ROWS[1], 1, AXIS.Y);
+      gameboard.placeShipAt(destroyer, ROWS[8], 1, AXIS.X);
     });
 
     it('throw if coordinates are out of bounds', () => {

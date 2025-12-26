@@ -113,7 +113,6 @@ class Gameboard {
       for (let i = 0; i < ship.length; i++) {
         coords.push(currCoord);
         if (mode === 'placement') this.grid.set(currCoord, ship.name);
-        // this.grid.set(currCoord, ship.name);
         if (orientation === AXIS.Y) {
           currCoord = `${ROWS[currIndex + 1]}-${y}`;
           currIndex++;

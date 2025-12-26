@@ -61,7 +61,7 @@ class Render {
     player1Id.textContent = `${userName}'s fleet`;
 
     const gameboard1 = document.createElement('div');
-    gameboard1.className = 'gameboard';
+    gameboard1.className = 'gameboard user';
 
     player1.appendChild(player1Id);
 
@@ -126,6 +126,38 @@ class Render {
     }
   }
 
+  static targetShipLocation(gameboardEl, coords) {
+    if (typeof coords === 'string') {
+      const row = coords.split('-')[0];
+      const col = coords.split('-')[1];
+      const squareEl = gameboardEl.querySelector(
+        `[data-row="${row}"][data-col="${col}"]`,
+      );
+      squareEl.classList.add('out-of-bounds');
+      return;
+    }
+
+    coords.forEach((square) => {
+      const row = square.split('-')[0];
+      const col = square.split('-')[1];
+      const squareEl = gameboardEl.querySelector(
+        `[data-row="${row}"][data-col="${col}"]`,
+      );
+      squareEl.classList.add('ship-preview');
+    });
+  }
+
+  static removeTargetShipLocation(gameboardEl, coords) {
+    coords.forEach((square) => {
+      const row = square.split('-')[0];
+      const col = square.split('-')[1];
+      const squareEl = gameboardEl.querySelector(
+        `[data-row="${row}"][data-col="${col}"]`,
+      );
+      squareEl.classList.remove('ship');
+    });
+  }
+
   static attack(gameboardEl, row, col, message) {
     const squareEl = gameboardEl.querySelector(
       `[data-row="${row}"][data-col="${col}"]`,
@@ -174,16 +206,16 @@ class Render {
 
   static axisBtns() {
     const actionsDiv = document.createElement('div');
-    actionsDiv.className = 'placement-buttons'
+    actionsDiv.className = 'placement-buttons';
     const button1 = document.createElement('button');
     const button2 = document.createElement('button');
     const button3 = document.createElement('button');
     button1.id = 'btn-y';
-    button1.textContent = 'Place Vertically';
+    button1.textContent = 'Y-Axis';
     button2.id = 'btn-x';
-    button2.textContent = 'Place Horizontally';
+    button2.textContent = 'X-Axis';
     button3.id = 'btn-random';
-    button3.textContent = 'Place Randomly';
+    button3.textContent = 'Random Placement';
 
     actionsDiv.appendChild(button1);
     actionsDiv.appendChild(button2);

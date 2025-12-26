@@ -208,7 +208,7 @@ button {
       align-items: center;
       justify-content: start;
       gap: 1.25rem;
-      width: 43%;
+      width: fit-content;
       margin-bottom: 2rem;
     }
 
@@ -255,8 +255,15 @@ button {
         justify-content: center;
         align-items: center;
         border: 1px solid hsla(230, 77%, 60%, 0.2);
+        transition: background 0.2s ease;
+        cursor: pointer;
 
         &.ship {
+          background: hsla(230, 77%, 60%, 0.2);
+          border-color: hsl(230, 77%, 60%);
+        }
+
+        &.ship-preview {
           background: hsla(230, 77%, 60%, 0.2);
           border-color: hsl(230, 77%, 60%);
         }
@@ -265,7 +272,8 @@ button {
           pointer-events: none;
         }
 
-        &.hit {
+        &.hit, 
+        &.out-of-bounds {
           background: hsla(3, 79%, 57%, 0.2);
         }
 
@@ -276,7 +284,6 @@ button {
 
       &.enemy {
         .square {
-          transition: background 0.2s ease;
           &:hover,
           &:active {
             background: hsla(214, 60%, 44%, 1);
