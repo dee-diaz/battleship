@@ -46,7 +46,8 @@ class Gameboard {
     return fleet;
   }
 
-  _placeShipAt(ship, x, y, orientation) {
+  placeShipAt(ship, x, y, orientation, mode) {
+    y = parseInt(y);
     if (y > 10 || y < 1 || !ROWS.includes(x))
       throw new Error('Enter correct coordinates!');
 
@@ -55,8 +56,13 @@ class Gameboard {
 
     if (this.grid.get(`${x}-${y}`) !== 1) throw new Error("Can't place here.");
 
-    if (ROWS.indexOf(x) > 10 - ship.length || y - 1 > 10 - ship.length)
+    if (orientation === AXIS.X && y + ship.length > 10) {
       throw new Error('Out of bounds.');
+    }
+
+    if (orientation === AXIS.Y && ROWS.indexOf(x) + ship.length > 10) {
+      throw new Error('Out of bounds.');
+    }
 
     let coords = [];
     let allEmpty = true;
@@ -106,7 +112,8 @@ class Gameboard {
 
       for (let i = 0; i < ship.length; i++) {
         coords.push(currCoord);
-        this.grid.set(currCoord, ship.name);
+        if (mode === 'placement') this.grid.set(currCoord, ship.name);
+        // this.grid.set(currCoord, ship.name);
         if (orientation === AXIS.Y) {
           currCoord = `${ROWS[currIndex + 1]}-${y}`;
           currIndex++;
@@ -132,7 +139,13 @@ class Gameboard {
           const randomX = ROWS[randomInt(0, 9)];
           const randomY = randomInt(1, 10);
           const randomAxis = Object.values(AXIS)[randomInt(0, 1)];
-          coords = this._placeShipAt(ship, randomX, randomY, randomAxis);
+          coords = this.placeShipAt(
+            ship,
+            randomX,
+            randomY,
+            randomAxis,
+            'placement',
+          );
           // eslint-disable-next-line no-unused-vars
         } catch (error) {
           attempts++;
