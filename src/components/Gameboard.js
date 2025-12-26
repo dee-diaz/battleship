@@ -56,7 +56,7 @@ class Gameboard {
 
     if (this.grid.get(`${x}-${y}`) !== 1) throw new Error("Can't place here.");
 
-    if (orientation === AXIS.X && y + ship.length > 10) {
+    if (orientation === AXIS.X && y + ship.length - 1 > 10) {
       throw new Error('Out of bounds.');
     }
 
