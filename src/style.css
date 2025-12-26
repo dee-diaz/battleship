@@ -82,6 +82,7 @@ button {
   border: none;
   cursor: pointer;
   text-transform: uppercase;
+  margin: 0;
 }
 
 input,
@@ -201,6 +202,15 @@ button {
     font-weight: 500;
     margin-bottom: clamp(3rem, 2.636rem + 1.82vw, 4rem);
   }
+
+  .placement-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 1.25rem;
+      width: 43%;
+      margin-bottom: 2rem;
+    }
 
   .gameboards-container {
     display: flex;

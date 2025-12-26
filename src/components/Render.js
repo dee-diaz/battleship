@@ -38,8 +38,6 @@ class Render {
     return userPrompt;
   }
 
-  static gameScreen() {}
-
   static removeFromDOM(selector) {
     document.querySelector(selector)?.remove();
   }
@@ -50,7 +48,7 @@ class Render {
 
     const statusPanel = document.createElement('div');
     statusPanel.className = 'status-panel';
-    statusPanel.textContent = 'Your turn, captain!';
+    statusPanel.textContent = `Place your ships, ${userName}`;
 
     const gameboardsCont = document.createElement('div');
     gameboardsCont.className = 'gameboards-container';
@@ -107,6 +105,10 @@ class Render {
       boardUser: gameboard1,
       boardEnemy: gameboard2,
     };
+  }
+
+  static toggleGameboardInteractivity(gameboardEl) {
+    gameboardEl.classList.toggle('disabled');
   }
 
   static ships(gameboardEl, coords) {
@@ -168,6 +170,26 @@ class Render {
     const h1 = document.createElement('h1');
     h1.textContent = 'Battleship';
     return h1;
+  }
+
+  static axisBtns() {
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'placement-buttons'
+    const button1 = document.createElement('button');
+    const button2 = document.createElement('button');
+    const button3 = document.createElement('button');
+    button1.id = 'btn-y';
+    button1.textContent = 'Place Vertically';
+    button2.id = 'btn-x';
+    button2.textContent = 'Place Horizontally';
+    button3.id = 'btn-random';
+    button3.textContent = 'Place Randomly';
+
+    actionsDiv.appendChild(button1);
+    actionsDiv.appendChild(button2);
+    actionsDiv.appendChild(button3);
+
+    return actionsDiv;
   }
 }
 

@@ -268,8 +268,15 @@ class Game {
     this.currentTurn = this.player1.name;
     Render.removeFromDOM('.user-prompt');
     this.gameUI = Render.gameboards(this.player1.name);
+    Render.toggleGameboardInteractivity(this.gameUI.boardEnemy);
     this.container.appendChild(this.gameUI.root);
-    Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
+    const placementBtns = Render.axisBtns();
+    this.gameUI.statusPanel.after(placementBtns);
+
+    // this.gameUI.boardUser.addEventListener('mouseover', () => {
+
+    // })
+    // Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
   };
 
   init() {
