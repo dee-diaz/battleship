@@ -7,7 +7,7 @@ class Ship {
   }
 
   hit() {
-    if (this._isSunk || this._numOfHits > this.length) return null;
+    if (this._isSunk || this._numOfHits >= this.length) return null;
     this._numOfHits++;
     return this._numOfHits;
   }
