@@ -386,6 +386,11 @@ class Game {
     Render.toggleGameboardInteractivity(this.gameUI.boardEnemy);
     Render.toggleGameboardInteractivity(this.gameUI.boardUser);
     Render.removeFromDOM('.placement-buttons');
+
+    if (window.innerWidth < 768) {
+      this.gameUI.gameboardsCont.style.flexDirection = 'column-reverse';
+    }
+
     this.gameUI.boardUser.removeEventListener(
       'mouseover',
       this.#handlePlacementHover,

@@ -101,6 +101,7 @@ class Render {
 
     return {
       root: gameCont,
+      gameboardsCont,
       statusPanel,
       boardUser: gameboard1,
       boardEnemy: gameboard2,
