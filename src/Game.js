@@ -278,78 +278,81 @@ class Game {
     const placementBtns = Render.axisBtns();
     this.gameUI.statusPanel.after(placementBtns);
 
+    this.gameUI.boardUser.addEventListener(
+      'mouseover',
+      this.#handlePlacementHover,
+    );
+
+    this.gameUI.boardUser.addEventListener('click', this.#handlePlacementClick);
+  };
+
+  #handlePlacementHover = (e) => {
+    if (!e.target.closest('.square')) return;
+    const currentSquare = e.target.closest('.square');
+    const row = currentSquare.dataset.row;
+    const col = currentSquare.dataset.col;
     const shipsArr = Object.values(SHIPS);
 
-    this.gameUI.boardUser.addEventListener('mouseover', (e) => {
-      if (!e.target.closest('.square')) return;
-      const currentSquare = e.target.closest('.square');
-      const row = currentSquare.dataset.row;
-      const col = currentSquare.dataset.col;
-
-      const markedCells = this.gameUI.boardUser.querySelectorAll(
-        '.ship-preview, .out-of-bounds',
-      );
-      markedCells.forEach((cell) => {
-        if (cell !== currentSquare) {
-          cell.classList.remove('ship-preview', 'out-of-bounds');
-        }
-      });
-
-      const fleet = this.player1.gameboard.fleet;
-
-      try {
-        const coords = this.player1.gameboard.placeShipAt(
-          fleet.get(shipsArr[this._shipToPlaceIndex]),
-          row,
-          col,
-          this._placementOrientation,
-        );
-
-        Render.targetShipLocation(this.gameUI.boardUser, coords);
-      } catch (error) {
-        Render.targetShipLocation(this.gameUI.boardUser, `${row}-${col}`);
+    const markedCells = this.gameUI.boardUser.querySelectorAll(
+      '.ship-preview, .out-of-bounds',
+    );
+    markedCells.forEach((cell) => {
+      if (cell !== currentSquare) {
+        cell.classList.remove('ship-preview', 'out-of-bounds');
       }
     });
 
-    this.gameUI.boardUser.addEventListener('click', (e) => {
-      if (!e.target.closest('.square')) return;
-      const currentSquare = e.target.closest('.square');
-      const row = currentSquare.dataset.row;
-      const col = currentSquare.dataset.col;
+    const fleet = this.player1.gameboard.fleet;
 
-      const ship = this.player1.gameboard.fleet.get(
-        shipsArr[this._shipToPlaceIndex],
+    try {
+      const coords = this.player1.gameboard.placeShipAt(
+        fleet.get(shipsArr[this._shipToPlaceIndex]),
+        row,
+        col,
+        this._placementOrientation,
       );
 
-      try {
-        this.player1.gameboard.placeShipAt(
-          ship,
-          row,
-          col,
-          this._placementOrientation,
-          'placement',
-        );
+      Render.targetShipLocation(this.gameUI.boardUser, coords);
+    } catch (error) {
+      Render.targetShipLocation(this.gameUI.boardUser, `${row}-${col}`);
+    }
+  };
 
-        Render.ships(
-          this.gameUI.boardUser,
-          this.player1.gameboard.shipPositions,
-        );
+  #handlePlacementClick = (e) => {
+    if (!e.target.closest('.square')) return;
+    const currentSquare = e.target.closest('.square');
+    const row = currentSquare.dataset.row;
+    const col = currentSquare.dataset.col;
+    const shipsArr = Object.values(SHIPS);
 
-        if (this._shipToPlaceIndex < 5) this._shipToPlaceIndex++;
-        if (this._shipToPlaceIndex === 5) {
-          this._shipsPlaced = true;
-          this._shipToPlaceIndex = 0;
-        }
-        
-        if (this._shipsPlaced) {
-          Render.toggleGameboardInteractivity(this.gameUI.boardUser);
-          Render.removeFromDOM('.placement-buttons');
-        }
-        
-      } catch (error) {
-        console.error('Cannot place ship here:', error.message);
+    const ship = this.player1.gameboard.fleet.get(
+      shipsArr[this._shipToPlaceIndex],
+    );
+
+    try {
+      this.player1.gameboard.placeShipAt(
+        ship,
+        row,
+        col,
+        this._placementOrientation,
+        'placement',
+      );
+
+      Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
+
+      if (this._shipToPlaceIndex < 5) this._shipToPlaceIndex++;
+      if (this._shipToPlaceIndex === 5) {
+        this._shipsPlaced = true;
+        this._shipToPlaceIndex = 0;
       }
-    });
+
+      if (this._shipsPlaced) {
+        Render.toggleGameboardInteractivity(this.gameUI.boardUser);
+        Render.removeFromDOM('.placement-buttons');
+      }
+    } catch (error) {
+      console.error('Cannot place ship here:', error.message);
+    }
   };
 
   init() {
