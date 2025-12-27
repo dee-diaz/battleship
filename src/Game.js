@@ -48,22 +48,44 @@ class Game {
     });
   }
 
+  #setStart() {
+    this.currentTurn = this.player1.name;
+    this.gameUI = Render.gameboards(this.player1.name);
+    this.container.appendChild(this.gameUI.root);
+    Render.toggleGameboardInteractivity(this.gameUI.boardEnemy);
+    const placementBtns = Render.axisBtns();
+    this.gameUI.statusPanel.after(placementBtns);
+
+    this.gameUI.boardUser.addEventListener(
+      'mouseover',
+      this.#handlePlacementHover,
+    );
+
+    this.gameUI.boardUser.addEventListener('click', this.#handlePlacementClick);
+  }
+
+  #startGame = (e) => {
+    e.preventDefault();
+    const userName = e.target.elements['user-name'].value;
+    this.player1 = new Player(PLAYER_TYPE.HUMAN, userName);
+    Render.removeFromDOM('.user-prompt');
+
+    this.#setStart();
+  };
+
   restartGame() {
     this.player1.gameboard.reset();
     this.player2.gameboard.reset();
     this.player2.gameboard.placeShips();
     this.container.innerHTML = '';
     this.container.appendChild(Render.pageTitle());
-    this.gameUI = Render.gameboards(this.player1.name);
-    this.container.appendChild(this.gameUI.root);
-    Render.ships(this.gameUI.boardUser, this.player1.gameboard.shipPositions);
-    this.currentTurn = this.player1.name;
     this.lastHitCell = null;
     this.hitCells = [];
     this.targetQueue = [];
     this.attackDirection = null;
     this._shipToPlaceIndex = 0;
     this._shipsPlaced = false;
+    this.#setStart();
   }
 
   #attack = async (e) => {
@@ -266,26 +288,6 @@ class Game {
       Render.status(this.gameUI.statusPanel, status);
     }
   }
-
-  #startGame = (e) => {
-    e.preventDefault();
-    const userName = e.target.elements['user-name'].value;
-    this.player1 = new Player(PLAYER_TYPE.HUMAN, userName);
-    this.currentTurn = this.player1.name;
-    Render.removeFromDOM('.user-prompt');
-    this.gameUI = Render.gameboards(this.player1.name);
-    Render.toggleGameboardInteractivity(this.gameUI.boardEnemy);
-    this.container.appendChild(this.gameUI.root);
-    const placementBtns = Render.axisBtns();
-    this.gameUI.statusPanel.after(placementBtns);
-
-    this.gameUI.boardUser.addEventListener(
-      'mouseover',
-      this.#handlePlacementHover,
-    );
-
-    this.gameUI.boardUser.addEventListener('click', this.#handlePlacementClick);
-  };
 
   #handlePlacementHover = (e) => {
     if (!e.target.closest('.square')) return;
