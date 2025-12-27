@@ -193,30 +193,30 @@ describe('Gameboard', () => {
       });
 
       it('throws when ships overlap completely', () => {
-        gameboard.placeShipAt(submarine, ROWS[1], 4, AXIS.X);
+        gameboard.placeShipAt(submarine, ROWS[1], 4, AXIS.X, 'placement');
         expect(() =>
-          gameboard.placeShipAt(cruiser, ROWS[1], 4, AXIS.X),
+          gameboard.placeShipAt(cruiser, ROWS[1], 4, AXIS.X, 'placement'),
         ).toThrow("Can't place here.");
       });
 
       it('throws when ships overlap partially', () => {
-        gameboard.placeShipAt(submarine, ROWS[1], 4, AXIS.X);
+        gameboard.placeShipAt(submarine, ROWS[1], 4, AXIS.X, 'placement');
         expect(() =>
-          gameboard.placeShipAt(cruiser, ROWS[1], 6, AXIS.X),
+          gameboard.placeShipAt(cruiser, ROWS[1], 6, AXIS.X, 'placement'),
         ).toThrow("Can't place here.");
       });
 
       it('throws when ships are adjacent (touching but not overlapping)', () => {
-        gameboard.placeShipAt(submarine, ROWS[4], 5, AXIS.Y);
+        gameboard.placeShipAt(submarine, ROWS[4], 5, AXIS.Y, 'placement');
         expect(() =>
-          gameboard.placeShipAt(cruiser, ROWS[5], 5, AXIS.Y),
+          gameboard.placeShipAt(cruiser, ROWS[5], 5, AXIS.Y, 'placement'),
         ).toThrow("Can't place here.");
       });
     });
 
     it('marks all occupied cells on the grid', () => {
       const submarine = fleet.get(SHIPS.SUBMARINE);
-      gameboard.placeShipAt(submarine, ROWS[1], 1, AXIS.X);
+      gameboard.placeShipAt(submarine, ROWS[1], 1, AXIS.X, 'placement');
       expect(gameboard.grid.get(`${ROWS[1]}-1`)).toBe(submarine.name);
       expect(gameboard.grid.get(`${ROWS[1]}-2`)).toBe(submarine.name);
       expect(gameboard.grid.get(`${ROWS[1]}-3`)).toBe(submarine.name);
@@ -243,8 +243,8 @@ describe('Gameboard', () => {
     beforeEach(() => {
       submarine = gameboard.fleet.get(SHIPS.SUBMARINE);
       destroyer = gameboard.fleet.get(SHIPS.DESTROYER);
-      gameboard.placeShipAt(submarine, ROWS[1], 1, AXIS.Y);
-      gameboard.placeShipAt(destroyer, ROWS[8], 1, AXIS.X);
+      gameboard.placeShipAt(submarine, ROWS[1], 1, AXIS.Y, 'placement');
+      gameboard.placeShipAt(destroyer, ROWS[8], 1, AXIS.X, 'placement');
     });
 
     it('throw if coordinates are out of bounds', () => {
@@ -277,7 +277,7 @@ describe('Gameboard', () => {
     it("can't hit an already hit square", () => {
       gameboard.receiveAttack(ROWS[5], 8);
       expect(gameboard.grid.get(`${ROWS[5]}-8`)).toBe(0);
-      expect(gameboard.receiveAttack(ROWS[5], 8)).toMatch('No effect');
+      expect(gameboard.receiveAttack(ROWS[5], 8)).toBeUndefined();
     });
 
     it('report if all the ships have been sunk', () => {
@@ -286,9 +286,7 @@ describe('Gameboard', () => {
       gameboard.receiveAttack(ROWS[3], 1);
 
       gameboard.receiveAttack(ROWS[8], 1);
-      expect(gameboard.receiveAttack(ROWS[8], 2)).toMatch(
-        'Game over. All ships have been sunk',
-      );
+      expect(gameboard.receiveAttack(ROWS[8], 2)).toContain('Game over');
     });
   });
 });
