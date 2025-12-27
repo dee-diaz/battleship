@@ -344,31 +344,30 @@ class Game {
       this._shipToPlaceIndex++;
 
       if (this._shipToPlaceIndex === 5) {
-        this._shipsPlaced = true;
-        this._shipToPlaceIndex = 0;
-      }
-
-      if (this._shipsPlaced) {
-        Render.status(
-          this.gameUI.statusPanel,
-          `Your turn, ${this.player1.name}`,
-        );
-        Render.toggleGameboardInteractivity(this.gameUI.boardEnemy);
-        Render.toggleGameboardInteractivity(this.gameUI.boardUser);
-        Render.removeFromDOM('.placement-buttons');
-        this.gameUI.boardUser.removeEventListener(
-          'mouseover',
-          this.#handlePlacementHover,
-        );
-        this.gameUI.boardUser.removeEventListener(
-          'click',
-          this.#handlePlacementClick,
-        );
+        this.#finishPlacement();
       }
     } catch (error) {
       console.error('Cannot place ship here:', error.message);
     }
   };
+
+  #finishPlacement() {
+    this._shipsPlaced = true;
+    this._shipToPlaceIndex = 0;
+
+    Render.status(this.gameUI.statusPanel, `Your turn, ${this.player1.name}`);
+    Render.toggleGameboardInteractivity(this.gameUI.boardEnemy);
+    Render.toggleGameboardInteractivity(this.gameUI.boardUser);
+    Render.removeFromDOM('.placement-buttons');
+    this.gameUI.boardUser.removeEventListener(
+      'mouseover',
+      this.#handlePlacementHover,
+    );
+    this.gameUI.boardUser.removeEventListener(
+      'click',
+      this.#handlePlacementClick,
+    );
+  }
 
   init() {
     const userPrompt = Render.firstScreen();
