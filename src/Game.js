@@ -364,7 +364,7 @@ class Game {
 
       this._shipToPlaceIndex++;
 
-      if (this._shipToPlaceIndex === 5) {
+      if (this._shipToPlaceIndex === Object.keys(SHIPS).length) {
         this.#finishPlacement();
       } else {
         const nextShip = shipsArr[this._shipToPlaceIndex];
