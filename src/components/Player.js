@@ -8,11 +8,6 @@ class Player {
     this.gameboard = new Gameboard();
     if (this.playerType === PLAYER_TYPE.BOT) this.gameboard.placeShips();
   }
-
-  resetGameboard() {
-    this.gameboard = new Gameboard();
-    this.gameboard.placeShips();
-  }
 }
 
 export default Player;

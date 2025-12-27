@@ -49,8 +49,9 @@ class Game {
   }
 
   restartGame() {
-    this.player1.resetGameboard();
-    this.player2.resetGameboard();
+    this.player1.gameboard.reset();
+    this.player2.gameboard.reset();
+    this.player2.gameboard.placeShips();
     this.container.innerHTML = '';
     this.container.appendChild(Render.pageTitle());
     this.gameUI = Render.gameboards(this.player1.name);

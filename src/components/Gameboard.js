@@ -23,6 +23,12 @@ class Gameboard {
     this.#shipPositions = new Map();
   }
 
+  reset() {
+    this.grid = this.#buildGrid();
+    this.fleet = this.createFleet();
+    this.#shipPositions = new Map();
+  }
+
   #buildGrid(size = 10) {
     const map = new Map();
 
