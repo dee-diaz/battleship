@@ -94,5 +94,3 @@ This project reinforced several key programming concepts:
 Project Link: [https://github.com/dee-diaz/battleship](https://github.com/dee-diaz/battleship)
 
 ---
-
-**Note**: This project was created as part of The Odin Project's JavaScript curriculum and represents the culmination of learning modern JavaScript development practices.
